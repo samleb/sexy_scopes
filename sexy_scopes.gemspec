@@ -17,14 +17,14 @@ Gem::Specification.new do |s|
      "README.md"
   ]
   s.files = [
-    ".document",
-     ".gitignore",
+    ".gitignore",
      "LICENSE",
      "README.md",
      "Rakefile",
      "VERSION",
      "lib/sexy_scopes.rb",
      "rails/init.rb",
+     "sexy_scopes.gemspec",
      "spec/sexy_scopes_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
