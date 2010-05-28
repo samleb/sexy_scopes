@@ -11,7 +11,7 @@ Examples
 --------
 
     class Product < ActiveRecord::Base
-      scope :untitled, attribute(:name) == nil
+      scope :untitled, where(attribute(:name) == nil)
       
       def self.cheaper_than(price)
         where attribute(:price) < price
