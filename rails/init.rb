@@ -1,1 +1,1 @@
-require 'ar_attributes'
+require 'sexy_scopes'
