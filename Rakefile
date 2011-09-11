@@ -10,27 +10,23 @@ begin
     gem.email = "samuel.lebeau@gmail.com"
     gem.homepage = "http://github.com/samleb/sexy_scopes"
     gem.authors = ["Samuel Lebeau"]
-    gem.add_dependency "activerecord", ">= 3.0.0.beta"
-    gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_development_dependency "yard", ">= 0"
+    gem.add_dependency "activerecord", "~> 3.0"
+    gem.add_development_dependency "rake", "~> 0.9"
+    gem.add_development_dependency "jeweler", "~> 1.0"
+    gem.add_development_dependency "sqlite3", "~> 1.0"
+    gem.add_development_dependency "rspec", "~> 2.1"
+    gem.add_development_dependency "rcov", "~> 0.9"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
-end
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
 
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.pattern = 'spec/**/*_spec.rb'
+RSpec::Core::RakeTask.new(:rcov) do |spec|
   spec.rcov = true
 end
-
-task :spec => :check_dependencies
 
 task :default => :spec

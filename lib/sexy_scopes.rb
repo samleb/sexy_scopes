@@ -1,21 +1,34 @@
 require 'delegate'
 require 'active_record'
-require 'arel'
 
 module SexyScopes
+  AREL_ALIASES = {
+    :<  => :lt,
+    :<= => :lteq,
+    :== => :eq,
+    :>= => :gteq,
+    :>  => :gt,
+    :=~ => :matches
+  }
+  
   module ClassMethods
     def attribute(name)
       Attribute.new(arel_table[name])
     end
+    
+    def literal(expression)
+      SqlLiteral.new(Arel.sql(expression))
+    end
   end
   
-  class Attribute < DelegateClass(Arel::Attribute)
-    alias_method :<,  :lt
-    alias_method :<=, :lteq
-    alias_method :==, :eq
-    alias_method :>=, :gteq
-    alias_method :>,  :gt
-    alias_method :=~, :matches
+  %w( Attribute SqlLiteral ).each do |class_name|
+    class_eval <<-EVAL
+      class #{class_name} < DelegateClass(Arel::#{class_name})
+        AREL_ALIASES.each do |aliased, original|
+          alias_method aliased, original
+        end
+      end
+    EVAL
   end
   
   ActiveRecord::Base.extend ClassMethods
