@@ -3,10 +3,9 @@ if ENV['COVERAGE']
   SimpleCov.start
 end
 
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift File.dirname(__FILE__)
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 
-require 'active_record'
 require 'sexy_scopes'
 require 'rspec'
 

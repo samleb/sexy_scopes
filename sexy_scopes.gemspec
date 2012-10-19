@@ -5,7 +5,8 @@ Gem::Specification.new do |gem|
   gem.name          = 'sexy_scopes'
   gem.version       = SexyScopes::VERSION
   
-  gem.summary = %{Small DSL to create ActiveRecord attribute predicates without writing SQL.}
+  gem.summary = %{Write beautiful and expressive ActiveRecord scopes without SQL.}
+  gem.description = %{Small DSL to create ActiveRecord (>= 3) attribute predicates without writing SQL.}
   
   gem.authors       = ['Samuel Lebeau']
   gem.email         = 'samuel.lebeau@gmail.com'
