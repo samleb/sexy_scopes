@@ -1,15 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class Arel::Nodes::Node
-  # Arel no longer provides `Node#==`, implement it by considering two nodes equal
-  # when they are instance of the same class and have the same instance variables.
-  def ==(other)
-    self.class == other.class && instance_variables == other.instance_variables && instance_variables.all? do |ivar|
-      instance_variable_get(ivar) == other.instance_variable_get(ivar)
-    end
-  end
-end
-
 describe SexyScopes do
   AREL_ALIASES = {
     :<  => :lt,
@@ -21,18 +11,18 @@ describe SexyScopes do
   }
   
   it "extends `ActiveRecord::Base` with `SexyScopes::ClassMethods`" do
-    ActiveRecord::Base.singleton_class.included_modules.should include(SexyScopes::ClassMethods)
+    ActiveRecord::Base.singleton_class.included_modules.should include(SexyScopes::ActiveRecord::ClassMethods)
   end
   
   describe "the `attribute` class method" do
     it "returns a `SexyScopes::Attribute` instance for the given attribute" do
       @attribute = User.attribute(:username)
-      @attribute.should be_a(SexyScopes::Attribute)
+      @attribute.should be_a(SexyScopes::ActiveRecord::Attribute)
       @attribute.name.should == :username
     end
   end
   
-  describe SexyScopes::Attribute do
+  describe SexyScopes::ActiveRecord::Attribute do
     before do
       @attribute = User.attribute(:username)
       @arel_attribute = User.arel_table[:username]
@@ -53,12 +43,12 @@ describe SexyScopes do
   describe "the `literal` class method" do
     it "returns a `SexyScopes::SqlLiteral` instance for the given expression" do
       @literal = User.literal('NOW()')
-      @literal.should be_a(SexyScopes::SqlLiteral)
+      @literal.should be_a(SexyScopes::ActiveRecord::SqlLiteral)
       @literal.to_s.should == 'NOW()'
     end
   end
   
-  describe SexyScopes::SqlLiteral do
+  describe SexyScopes::ActiveRecord::SqlLiteral do
     before do
       @literal = User.literal('NOW()')
       @arel_literal = Arel.sql('NOW()')

@@ -1,1 +1,0 @@
-require 'sexy_scopes'

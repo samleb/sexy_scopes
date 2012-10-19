@@ -22,8 +22,8 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/sexy_scopes.rb",
-    "rails/init.rb",
-    "sexy_scopes.gemspec",
+    "lib/sexy_scopes/active_record.rb",
+    "lib/sexy_scopes/railtie.rb",
     "spec/sexy_scopes_spec.rb",
     "spec/spec.opts",
     "spec/spec_helper.rb"
