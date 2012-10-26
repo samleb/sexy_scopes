@@ -36,13 +36,15 @@ available and predicates can be chained using special operators `&` (`and`),
 `|` (`or`), and `~` (`not`):
 
 ```ruby
-class Product
+class User < ActiveRecord::Base
   (attribute(:age) + 20 == 40).to_sql
   # => ("users"."age" + 20) = 40
   
   ((attribute(:username) == "Bob") | (attribute(:username) != "Alice")).to_sql
   # => ("users"."username" = 'Bob' OR "users"."username" != 'Alice')
-  
+end
+
+class Product < ActiveRecord::Base
   predicate = (attribute(:name) == nil) & ~attribute(:category).in(%w( shoes shirts ))
   predicate.to_sql
   # => "products"."name" IS NULL AND NOT ("products"."category" IN ('shoes', 'shirts'))
