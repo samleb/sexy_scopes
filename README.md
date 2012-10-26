@@ -17,38 +17,42 @@ objects that can be used as arguments to `ActiveRecord::Base.where`.
 Usage & Examples
 ----------------
 
-    class Product < ActiveRecord::Base
-      scope :untitled, where(attribute(:name) == nil)
-      
-      def self.cheaper_than(price)
-        where attribute(:price) < price
-      end
-      
-      def self.search(term)
-        where attribute(:name) =~ "%#{term}%"
-      end
-    end
+```ruby
+class Product < ActiveRecord::Base
+  scope :untitled, where(attribute(:name) == nil)
+  
+  def self.cheaper_than(price)
+    where attribute(:price) < price
+  end
+  
+  def self.search(term)
+    where attribute(:name) =~ "%#{term}%"
+  end
+end
+```
 
 Classic `Arel::Attribute` methods (`lt`, `in`, `matches`, `not`, etc.) are still 
 available and predicates can be chained using special operators `&` (`and`),
 `|` (`or`), and `~` (`not`):
 
-    class Product
-      # These predicates can be used as arguments to `where`
-      where(predicate).all
-      # Rails SQL Logger: SELECT "products".* FROM "products" WHERE "products"."name" IS NULL
-      #                   AND NOT ("products"."category" IN ('shoes', 'shirts'))
-      
-      (attribute(:age) + 20 == 40).to_sql
-      # => ("users"."age" + 20) = 40
-      
-      ((attribute(:username) == "Bob") | (attribute(:username) != "Alice")).to_sql
-      # => ("users"."username" = 'Bob' OR "users"."username" != 'Alice')
-      
-      predicate = (attribute(:name) == nil) & ~attribute(:category).in(%w( shoes shirts ))
-      predicate.to_sql
-      # => "products"."name" IS NULL AND NOT ("products"."category" IN ('shoes', 'shirts'))
-    end
+```ruby
+class Product
+  (attribute(:age) + 20 == 40).to_sql
+  # => ("users"."age" + 20) = 40
+  
+  ((attribute(:username) == "Bob") | (attribute(:username) != "Alice")).to_sql
+  # => ("users"."username" = 'Bob' OR "users"."username" != 'Alice')
+  
+  predicate = (attribute(:name) == nil) & ~attribute(:category).in(%w( shoes shirts ))
+  predicate.to_sql
+  # => "products"."name" IS NULL AND NOT ("products"."category" IN ('shoes', 'shirts'))
+  
+  # These predicates can be used as arguments to `where`
+  where(predicate).all
+  # Rails SQL Logger: SELECT "products".* FROM "products" WHERE "products"."name" IS NULL
+  #                   AND NOT ("products"."category" IN ('shoes', 'shirts'))
+end
+```
 
 Here is a complete list of Arel method aliases:
 
