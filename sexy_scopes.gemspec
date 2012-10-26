@@ -14,7 +14,6 @@ Gem::Specification.new do |gem|
 
   gem.files         = `git ls-files`.split($/)
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  # gem.require_paths = ['lib']
   
   gem.licenses = ['MIT']
   
@@ -22,7 +21,12 @@ Gem::Specification.new do |gem|
   
   gem.add_development_dependency 'bundler', '~> 1.0'
   gem.add_development_dependency 'rake'
-  gem.add_development_dependency 'sqlite3'
+  gem.add_development_dependency 'rails', '~> 3.0'
   gem.add_development_dependency 'rspec', '~> 2.0'
-  gem.add_development_dependency 'simplecov'
+  gem.add_development_dependency 'sqlite3'
+  if RUBY_VERSION >= '1.9'
+    gem.add_development_dependency 'simplecov'
+  else
+    gem.add_development_dependency 'rcov'
+  end
 end
