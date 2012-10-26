@@ -3,28 +3,32 @@ if ENV['COVERAGE']
   SimpleCov.start
 end
 
-$LOAD_PATH.unshift File.dirname(__FILE__)
-$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-
-require 'sexy_scopes'
 require 'rspec'
+require 'active_record'
+require 'sexy_scopes'
 
-class Arel::Nodes::Node
-  # Arel no longer provides `Node#==`, implement it by considering two nodes equal
-  # when they are instance of the same class and have the same instance variables.
-  def ==(other)
-    self.class == other.class && instance_variables == other.instance_variables && instance_variables.all? do |ivar|
-      instance_variable_get(ivar) == other.instance_variable_get(ivar)
-    end
+RSpec::Matchers.define :be_extended_by do |expected|
+  match do |actual|
+    actual.singleton_class.included_modules.include?(expected)
+  end
+end
+
+RSpec::Matchers.define :generate_sql do |expected|
+  match do |actual|
+    actual.to_sql.should == expected
+  end
+  failure_message_for_should do |actual|
+    "expected #{expected}, got #{actual.to_sql}"
   end
 end
 
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
 ActiveRecord::Schema.verbose = false
-ActiveRecord::Schema.define(:version => 1) do
+ActiveRecord::Schema.define do
   create_table :users do |t|
-    t.string :username
+    t.string  :username
+    t.integer :score
   end
 end
 
