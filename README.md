@@ -6,25 +6,21 @@ SexyScopes
 * [Source Code](https://github.com/samleb/sexy_scopes)
 * [Rubygem](http://rubygems.org/gems/sexy_scopes)
 
-sexy_scope is a small wrapper around `Arel::Attribute` that adds a little syntactic
-sugar when creating scopes in ActiveRecord 3.
-
-It adds an `attribute` class method which takes an attribute name and returns an 
-`Arel::Attribute` wrapper, which responds to common operators to return predicates
-objects that can be used as arguments to `ActiveRecord::Base.where`.
-
+SexyScopes is a gem that adds syntactic sugar for creating scopes in Rails 3.
 
 Usage & Examples
 ----------------
 
 ```ruby
 class Product < ActiveRecord::Base
-  scope :untitled, where(attribute(:name) == nil)
-  
+  # `self.price` represents the `price` column
   def self.cheaper_than(price)
-    where attribute(:price) < price
+    where self.price < price
   end
   
+  scope :visible, (category != nil) & (draft == false)
+  
+  # can't use `name` directly here as `Product.name` method already exists (== "Product")
   def self.search(term)
     where attribute(:name) =~ "%#{term}%"
   end
@@ -37,22 +33,26 @@ available and predicates can be chained using special operators `&` (`and`),
 
 ```ruby
 class User < ActiveRecord::Base
-  (attribute(:age) + 20 == 40).to_sql
-  # => ("users"."age" + 20) = 40
+  scope :recently_signed_in, lambda {
+    where last_sign_in_at > 10.days.ago
+  }
   
-  ((attribute(:username) == "Bob") | (attribute(:username) != "Alice")).to_sql
+  (score + 20 == 40).to_sql
+  # => ("users"."score" + 20) = 40
+  
+  ((username == "Bob") | (username != "Alice")).to_sql
   # => ("users"."username" = 'Bob' OR "users"."username" != 'Alice')
 end
 
 class Product < ActiveRecord::Base
-  predicate = (attribute(:name) == nil) & ~attribute(:category).in(%w( shoes shirts ))
+  predicate = (attribute(:name) == nil) & ~category.in(%w( shoes shirts ))
   predicate.to_sql
   # => "products"."name" IS NULL AND NOT ("products"."category" IN ('shoes', 'shirts'))
   
   # These predicates can be used as arguments to `where`
   where(predicate).all
-  # Rails SQL Logger: SELECT "products".* FROM "products" WHERE "products"."name" IS NULL
-  #                   AND NOT ("products"."category" IN ('shoes', 'shirts'))
+  # => SELECT "products".* FROM "products" WHERE "products"."name" IS NULL AND 
+  #    NOT ("products"."category" IN ('shoes', 'shirts'))
 end
 ```
 
@@ -67,6 +67,7 @@ Here is a complete list of Arel method aliases:
   - `<` : `lt`
   - `<=`: `lteq`
   - `!=`: `not_eq`
+
 
 * For combination
   - `&`: `and`
