@@ -44,11 +44,4 @@ describe SexyScopes::ActiveRecord do
       lambda { User.foobar }.should raise_error NoMethodError
     end
   end
-  
-  protected
-    def arel_class(namespace, name)
-      Arel.const_get(namespace).const_get(name)
-    rescue NameError
-      Arel.const_get(name)
-    end
 end
