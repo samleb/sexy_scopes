@@ -33,6 +33,19 @@ module SexyScopes
       end
     end
     alias_method :sql, :sql_literal
+    
+    def respond_to?(method_name, include_private = false)
+      super || column_names.include?(method_name.to_s)
+    end
+    
+    private
+      def method_missing(name, *args)
+        if column_names.include?(name.to_s)
+          attribute(name)
+        else
+          super
+        end
+      end
   end
   
   # Add these methods to Active Record

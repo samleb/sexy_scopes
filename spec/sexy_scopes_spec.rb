@@ -32,6 +32,19 @@ describe SexyScopes::ActiveRecord do
     it { should be_extended_by SexyScopes::Arel::PredicateWrappers }
   end
   
+  context "dynamic method handling (method_missing/respond_to?)" do
+    it "should delegate to `attribute` when the method name is the name of an existing column" do
+      User.should respond_to(:username)
+      User.should_receive(:attribute).with(:username).once.and_return(:ok)
+      User.username.should == :ok
+    end
+    
+    it "should raise NoMethodError otherwise" do
+      User.should_not respond_to(:foobar)
+      lambda { User.foobar }.should raise_error NoMethodError
+    end
+  end
+  
   protected
     def arel_class(namespace, name)
       Arel.const_get(namespace).const_get(name)
