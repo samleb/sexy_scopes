@@ -1,6 +1,6 @@
 module SexyScopes
   # @!visibility private
-  module Wrappers
+  module Wrappers # :nodoc:
     private
       def extend_expression(expression)
         expression.extend(Arel::ExpressionWrappers)

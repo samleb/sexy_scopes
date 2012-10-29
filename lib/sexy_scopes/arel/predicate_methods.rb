@@ -1,6 +1,5 @@
 module SexyScopes
   module Arel
-    # @!visibility private
     module PredicateMethods
       def eq(other)
         extend_predicate(super)
