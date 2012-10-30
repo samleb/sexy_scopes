@@ -1,13 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-shared_examples "a predicate method" do
-  it "should return an Arel node" do
-    subject.class.name.should =~ /^Arel::/
-  end
-  
-  it { should be_extended_by SexyScopes::Arel::PredicateWrappers }
-end
-
 describe SexyScopes::Arel::PredicateMethods do
   before do
     @attribute = User.attribute(:score)

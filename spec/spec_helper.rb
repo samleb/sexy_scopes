@@ -28,6 +28,14 @@ RSpec::Matchers.define :convert_to_sql do |expected|
   end
 end
 
+shared_examples "a predicate method" do
+  it "should return an Arel node" do
+    subject.class.name.should =~ /^Arel::/
+  end
+  
+  it { should be_extended_by SexyScopes::PredicateWrappers }
+end
+
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
 ActiveRecord::Schema.verbose = false
