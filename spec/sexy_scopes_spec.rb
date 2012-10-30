@@ -12,7 +12,7 @@ describe SexyScopes::ActiveRecord do
       subject.should eql User.arel_table[:username]
     end
     
-    it { should be_extended_by SexyScopes::Arel::ExpressionWrappers }
+    it { should be_extended_by SexyScopes::ExpressionWrappers }
   end
   
   describe ".sql_literal(expression)" do
@@ -27,9 +27,9 @@ describe SexyScopes::ActiveRecord do
         SexyScopes::ActiveRecord.instance_method(:sql_literal)
     end
     
-    it { should be_extended_by SexyScopes::Arel::ExpressionWrappers }
+    it { should be_extended_by SexyScopes::ExpressionWrappers }
     
-    it { should be_extended_by SexyScopes::Arel::PredicateWrappers }
+    it { should be_extended_by SexyScopes::PredicateWrappers }
   end
   
   context "dynamic method handling (method_missing/respond_to?)" do

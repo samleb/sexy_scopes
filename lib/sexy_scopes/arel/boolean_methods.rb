@@ -1,8 +1,6 @@
 module SexyScopes
   module Arel
-    module PredicateWrappers
-      include Wrappers
-      
+    module BooleanMethods
       def not
         extend_predicate(super)
       end

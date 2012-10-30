@@ -5,10 +5,10 @@ shared_examples "an expression method" do
     subject.class.name.should =~ /^Arel::/
   end
   
-  it { should be_extended_by SexyScopes::Arel::ExpressionWrappers }
+  it { should be_extended_by SexyScopes::ExpressionWrappers }
 end
 
-describe SexyScopes::Arel::ExpressionMethods do
+describe SexyScopes::Arel::MathMethods do
   before do
     @attribute = User.attribute(:score)
   end

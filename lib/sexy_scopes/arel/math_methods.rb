@@ -1,6 +1,6 @@
 module SexyScopes
   module Arel
-    module ExpressionMethods
+    module MathMethods
       def *(other)
         extend_expression(super)
       end
