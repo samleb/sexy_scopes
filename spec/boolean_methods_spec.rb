@@ -13,6 +13,10 @@ describe SexyScopes::Arel::BooleanMethods do
     it_behaves_like "a predicate method"
     
     it { should convert_to_sql %{NOT ("users"."score" < 1000)} }
+    
+    it "should be aliased as `~`" do
+      @predicate.method(:~).should == @predicate.method(:not)
+    end
   end
   
   describe ".and(predicate)" do
@@ -21,6 +25,10 @@ describe SexyScopes::Arel::BooleanMethods do
     it_behaves_like "a predicate method"
     
     it { should convert_to_sql %{"users"."score" < 1000 AND "users"."score" >= 200} }
+    
+    it "should be aliased as `&`" do
+      @predicate.method(:&).should == @predicate.method(:and)
+    end
   end
   
   describe ".or(predicate)" do
@@ -29,5 +37,9 @@ describe SexyScopes::Arel::BooleanMethods do
     it_behaves_like "a predicate method"
     
     it { should convert_to_sql %{("users"."score" < 1000 OR "users"."score" >= 200)} }
+    
+    it "should be aliased as `|`" do
+      @predicate.method(:|).should == @predicate.method(:or)
+    end
   end
 end
