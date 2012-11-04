@@ -1,3 +1,5 @@
+require 'active_support/dependencies/autoload'
+
 module SexyScopes
   %w( Version VERSION ).each do |constant|
     autoload constant, 'sexy_scopes/version'
