@@ -49,6 +49,11 @@ module SexyScopes
       super || column_names.include?(method_name.to_s)
     end
     
+    # @!visibility private
+    def respond_to_missing?(method_name, include_private = false) # :nodoc:
+      column_names.include?(method_name.to_s)
+    end
+    
     private
       # Equivalent to calling {#attribute} with the missing method's <tt>name</tt> if the table
       # has a column with that name.

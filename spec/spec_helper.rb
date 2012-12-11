@@ -7,6 +7,14 @@ require 'rspec'
 require 'active_record'
 require 'sexy_scopes'
 
+RSpec.configure do |config|
+  config.extend Module.new {
+    def ruby_19
+      yield if RUBY_VERSION >= "1.9"
+    end
+  }
+end
+
 RSpec::Matchers.define :be_extended_by do |expected|
   match do |actual|
     extended_modules = actual.singleton_class.included_modules

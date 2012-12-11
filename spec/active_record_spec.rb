@@ -39,6 +39,12 @@ describe SexyScopes::ActiveRecord do
       User.username.should == :ok
     end
     
+    ruby_19 do
+      it "should return a Method object for an existing column" do
+        lambda { User.method(:username) }.should_not raise_error
+      end
+    end
+    
     it "should raise NoMethodError otherwise" do
       User.should_not respond_to(:foobar)
       lambda { User.foobar }.should raise_error NoMethodError
