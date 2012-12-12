@@ -44,4 +44,12 @@ describe SexyScopes::Arel::MathMethods do
     
     it { should convert_to_sql %{"users"."score" / 42.0} }
   end
+  
+  describe "type coercion" do
+    subject { 42.0 / @attribute }
+    
+    it_behaves_like "an expression method"
+    
+    it { should convert_to_sql %{42.0 / "users"."score"} }
+  end
 end

@@ -16,6 +16,10 @@ module SexyScopes
       def /(other)
         extend_expression(super)
       end
+      
+      def coerce(other)
+        [extend_expression(::Arel.sql(other.to_s)), self]
+      end
     end
   end
 end
