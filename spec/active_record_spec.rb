@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 
 describe SexyScopes::ActiveRecord do
   it "should extend ActiveRecord::Base" do
