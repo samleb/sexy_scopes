@@ -85,10 +85,19 @@ module SexyScopes
       #
       def method_missing(name, *args)
         if column_names.include?(name.to_s)
+          define_sexy_scopes_attribute_method(name)
           attribute(name)
         else
           super
         end
+      end
+      
+      def define_sexy_scopes_attribute_method(name)
+        class_eval <<-EVAL, __FILE__, __LINE__ + 1
+          def self.#{name}        # def self.username
+            attribute(:#{name})   #   attribute(:username)
+          end                     # end
+        EVAL
       end
   end
   

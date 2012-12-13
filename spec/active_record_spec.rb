@@ -33,15 +33,30 @@ describe SexyScopes::ActiveRecord do
   end
   
   context "dynamic method handling (method_missing/respond_to?)" do
+    before do
+      ActiveRecord::Migration.add_column :users, :temp_column, :string
+      User.reset_column_information
+    end
+    
+    after do
+      ActiveRecord::Migration.remove_column :users, :temp_column
+    end
+    
     it "should delegate to `attribute` when the method name is the name of an existing column" do
-      User.should respond_to(:username)
-      User.should_receive(:attribute).with(:username).once.and_return(:ok)
-      User.username.should == :ok
+      User.should respond_to(:temp_column)
+      User.should_receive(:attribute).with(:temp_column).once.and_return(:ok)
+      User.temp_column.should == :ok
+    end
+    
+    it "should define an attribute method to avoid repeated `method_missing` calls" do
+      User.temp_column
+      User.should_not_receive(:method_missing)
+      User.temp_column
     end
     
     ruby_19 do
       it "should return a Method object for an existing column" do
-        lambda { User.method(:username) }.should_not raise_error
+        lambda { User.method(:temp_column) }.should_not raise_error
       end
     end
     
