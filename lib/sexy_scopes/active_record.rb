@@ -51,12 +51,7 @@ module SexyScopes
     
     # # @!visibility private
     def respond_to_missing?(method_name, include_private = false) # :nodoc:
-      super || column_names.include?(method_name.to_s)
-    rescue NoMethodError
-      # For some unknown reason, edge ActiveRecord tests raises the following 
-      # when trying to Marshal.dump a record:
-      #   "NoMethodError: undefined method `abstract_class?' for Object:Class"
-      false
+      Object.respond_to?(:respond_to_missing?) && super || attribute_names.include?(method_name.to_s)
     end
     
     private
@@ -107,5 +102,5 @@ module SexyScopes
   end
   
   # Add these methods to Active Record
-  ::ActiveRecord::Base.extend SexyScopes::ActiveRecord
+  ::ActiveRecord::AttributeMethods::ClassMethods.extend SexyScopes::ActiveRecord
 end
