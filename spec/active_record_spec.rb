@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe SexyScopes::ActiveRecord do
+describe SexyScopes::ActiveRecord::ClassMethods do
   it "should extend ActiveRecord::Base" do
-    ActiveRecord::Base.should be_extended_by SexyScopes::ActiveRecord
+    ActiveRecord::Base.should be_extended_by SexyScopes::ActiveRecord::ClassMethods
   end
   
   describe ".attribute(name)" do
@@ -23,46 +23,53 @@ describe SexyScopes::ActiveRecord do
     end
     
     it "should be aliased as `sql`" do
-      SexyScopes::ActiveRecord.instance_method(:sql).should ==
-        SexyScopes::ActiveRecord.instance_method(:sql_literal)
+      SexyScopes::ActiveRecord::ClassMethods.instance_method(:sql).should ==
+        SexyScopes::ActiveRecord::ClassMethods.instance_method(:sql_literal)
     end
     
     it { should be_extended_by SexyScopes::ExpressionWrappers }
     
     it { should be_extended_by SexyScopes::PredicateWrappers }
   end
+end
+
+describe SexyScopes::ActiveRecord::DynamicMethods do
+  before do
+    ActiveRecord::Migration.create_table :temp_users
+    ActiveRecord::Migration.add_column :temp_users, :username, :string
+    class ::TempUser < ActiveRecord::Base; end
+  end
   
-  context "dynamic method handling (method_missing/respond_to?)" do
-    before do
-      ActiveRecord::Migration.add_column :users, :temp_column, :string
-      User.reset_column_information
+  after do
+    Object.send(:remove_const, :TempUser)
+    ActiveRecord::Migration.drop_table :temp_users
+  end
+  
+  it "should delegate to `attribute` when the method name is the name of an existing column" do
+    TempUser.should respond_to(:username)
+    TempUser.should_receive(:attribute).with(:username).once.and_return(:ok)
+    TempUser.username.should == :ok
+  end
+  
+  it "should define an attribute method to avoid repeated `method_missing` calls" do
+    TempUser.username
+    TempUser.should_not_receive(:method_missing)
+    TempUser.username
+  end
+  
+  ruby_19 do
+    it "should return a Method object for an existing column" do
+      lambda { TempUser.method(:username) }.should_not raise_error
     end
-    
-    after do
-      ActiveRecord::Migration.remove_column :users, :temp_column
-    end
-    
-    it "should delegate to `attribute` when the method name is the name of an existing column" do
-      User.should respond_to(:temp_column)
-      User.should_receive(:attribute).with(:temp_column).once.and_return(:ok)
-      User.temp_column.should == :ok
-    end
-    
-    it "should define an attribute method to avoid repeated `method_missing` calls" do
-      User.temp_column
-      User.should_not_receive(:method_missing)
-      User.temp_column
-    end
-    
-    ruby_19 do
-      it "should return a Method object for an existing column" do
-        lambda { User.method(:temp_column) }.should_not raise_error
-      end
-    end
-    
-    it "should raise NoMethodError otherwise" do
-      User.should_not respond_to(:foobar)
-      lambda { User.foobar }.should raise_error NoMethodError
-    end
+  end
+  
+  it "should raise NoMethodError for a non-existing column" do
+    TempUser.should_not respond_to(:foobar)
+    lambda { TempUser.foobar }.should raise_error NoMethodError
+  end
+  
+  it "should not raise error when table doesn't exist" do
+    TempUser.should_receive(:column_names).any_number_of_times.and_raise ActiveRecord::StatementInvalid
+    lambda { TempUser.respond_to?(:username) }.should_not raise_error
   end
 end
