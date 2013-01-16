@@ -59,17 +59,17 @@ describe SexyScopes::ActiveRecord::DynamicMethods do
   
   ruby_19 do
     it "should return a Method object for an existing column" do
-      lambda { TempUser.method(:username) }.should_not raise_error
+      expect { TempUser.method(:username) }.to_not raise_error
     end
   end
   
   it "should raise NoMethodError for a non-existing column" do
     TempUser.should_not respond_to(:foobar)
-    lambda { TempUser.foobar }.should raise_error NoMethodError
+    expect { TempUser.foobar }.to raise_error NoMethodError
   end
   
   it "should not raise error when table doesn't exist" do
     TempUser.table_name = "inexistent_users"
-    lambda { TempUser.respond_to?(:username) }.should_not raise_error
+    expect { TempUser.respond_to?(:username) }.to_not raise_error
   end
 end
