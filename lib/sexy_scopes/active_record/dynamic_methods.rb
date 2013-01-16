@@ -58,11 +58,11 @@ module SexyScopes
         end
 
         def sexy_scopes_has_attribute?(attribute_name)
-          if self != ::ActiveRecord::Base && !abstract_class? && table_exists?
+          if equal?(::ActiveRecord::Base) || abstract_class? || !table_exists?
+            false
+          else
             column_names.include?(attribute_name.to_s)
           end
-        rescue ::ActiveRecord::StatementInvalid
-          false
         end
     end
   end

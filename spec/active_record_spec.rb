@@ -69,7 +69,7 @@ describe SexyScopes::ActiveRecord::DynamicMethods do
   end
   
   it "should not raise error when table doesn't exist" do
-    TempUser.should_receive(:column_names).any_number_of_times.and_raise ActiveRecord::StatementInvalid
+    TempUser.table_name = "inexistent_users"
     lambda { TempUser.respond_to?(:username) }.should_not raise_error
   end
 end
