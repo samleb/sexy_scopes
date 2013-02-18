@@ -32,7 +32,8 @@ describe SexyScopes::Arel::PredicateMethods do
       
       if operator && (!RUBY_19_METHODS.include?(operator) || ruby_19?)
         it "is aliased as `#{operator}`" do
-          @attribute.method(operator).should == @attribute.method(method)
+          SexyScopes::Arel::PredicateMethods.instance_method(operator).should ==
+            SexyScopes::Arel::PredicateMethods.instance_method(method)
         end
       end
     end
