@@ -6,7 +6,7 @@ SexyScopes
 * [Source Code](https://github.com/samleb/sexy_scopes)
 * [Rubygem](http://rubygems.org/gems/sexy_scopes)
 
-SexyScopes is a gem that adds syntactic sugar for creating scopes in Rails 3.
+SexyScopes is a gem that adds syntactic sugar for creating scopes in ActiveRecord >= 3.1.
 
 Usage & Examples
 ----------------

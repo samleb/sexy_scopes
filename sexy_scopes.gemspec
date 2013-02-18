@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.version       = SexyScopes::VERSION
   
   gem.summary = %{Write beautiful and expressive ActiveRecord scopes without SQL.}
-  gem.description = %{Small DSL to create ActiveRecord (>= 3) attribute predicates without writing SQL.}
+  gem.description = %{Small DSL to create ActiveRecord (>= 3.1) attribute predicates without writing SQL.}
   
   gem.authors       = ['Samuel Lebeau']
   gem.email         = 'samuel.lebeau@gmail.com'
@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
   
   gem.licenses = ['MIT']
   
-  gem.add_dependency 'activerecord', '~> 3.0'
+  gem.add_dependency 'activerecord', '~> 3.1'
   
   gem.add_development_dependency 'bundler', '~> 1.0'
   gem.add_development_dependency 'rake', '~> 0.9'
