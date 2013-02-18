@@ -1,6 +1,13 @@
 module SexyScopes
   module Arel
     module PredicateMethods
+      class << self
+        private
+          def ruby_19_alias(new_name, old_name)
+            class_eval "alias #{new_name} #{old_name}" if RUBY_VERSION >= "1.9"
+          end
+      end
+      
       def eq(other)
         extend_predicate(super)
       end
@@ -18,7 +25,7 @@ module SexyScopes
       def does_not_match(other)
         extend_predicate(super)
       end
-      alias !~ does_not_match
+      ruby_19_alias '!~', 'does_not_match'
       
       def gteq(other)
         extend_predicate(super)
@@ -43,7 +50,7 @@ module SexyScopes
       def not_eq(other)
         extend_predicate(super)
       end
-      alias != not_eq
+      ruby_19_alias '!=', 'not_eq'
     end
   end
 end

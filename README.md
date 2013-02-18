@@ -61,13 +61,12 @@ Here is a complete list of Arel method aliases:
 * For predicates:
   - `==`: `eq`
   - `=~`: `matches`
-  - `!~`: `does_not_match`
+  - `!~`: `does_not_match` (won't work in Ruby 1.8)
   - `>=`: `gteq`
   - `>` : `gt`
   - `<` : `lt`
   - `<=`: `lteq`
-  - `!=`: `not_eq`
-
+  - `!=`: `not_eq` (won't work in Ruby 1.8)
 
 * For combination
   - `&`: `and`

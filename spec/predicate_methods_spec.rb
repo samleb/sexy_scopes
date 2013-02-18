@@ -5,6 +5,8 @@ describe SexyScopes::Arel::PredicateMethods do
     @attribute = User.attribute(:score)
   end
   
+  RUBY_19_METHODS = %w( != !~ )
+  
   METHODS = {
     # Arel method   => [ Ruby operator, SQL operator ]
     :eq             => [ '==',  '= %s'        ],
@@ -28,9 +30,11 @@ describe SexyScopes::Arel::PredicateMethods do
       
       it { should convert_to_sql %{"users"."score" #{sql_operator % 42.0}} }
       
-      it "is aliased as `#{operator}`" do
-        @attribute.method(operator).should == @attribute.method(method)
-      end if operator
+      if operator && (!RUBY_19_METHODS.include?(operator) || ruby_19?)
+        it "is aliased as `#{operator}`" do
+          @attribute.method(operator).should == @attribute.method(method)
+        end
+      end
     end
   end
 end
