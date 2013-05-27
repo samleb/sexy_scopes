@@ -17,7 +17,9 @@ Gem::Specification.new do |gem|
   
   gem.licenses = ['MIT']
   
-  gem.add_dependency 'activerecord', '~> 3.1'
+  gem.required_ruby_version = '>= 1.9.2'
+  
+  gem.add_dependency 'activerecord', '>= 3.1'
   
   gem.add_development_dependency 'bundler', '~> 1.0'
   gem.add_development_dependency 'rake', '~> 0.9'
@@ -26,9 +28,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'sqlite3', '~> 1.0'
   gem.add_development_dependency 'redcarpet', '~> 2.2'
   gem.add_development_dependency 'yard', '~> 0.8'
-  if RUBY_VERSION >= '1.9'
-    gem.add_development_dependency 'simplecov'
-  else
-    gem.add_development_dependency 'rcov'
-  end
+  gem.add_development_dependency 'simplecov'
 end

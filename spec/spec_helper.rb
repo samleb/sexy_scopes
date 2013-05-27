@@ -7,18 +7,6 @@ require 'rspec'
 require 'active_record'
 require 'sexy_scopes'
 
-RSpec.configure do |config|
-  config.extend Module.new {
-    def ruby_19
-      yield if ruby_19?
-    end
-    
-    def ruby_19?
-      RUBY_VERSION >= "1.9"
-    end
-  }
-end
-
 Dir.glob(File.join(File.dirname(__FILE__), '{fixtures,matchers}', '*')) do |file|
   require file
 end

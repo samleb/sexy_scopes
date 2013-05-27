@@ -1,13 +1,14 @@
 language: ruby
 bundler_args: --without development --standalone
 rvm:
-  - 1.8.7
   - 1.9.2
   - 1.9.3
+  - 2.0.0
 gemfile:
   - ci/Gemfile.ar3.1
+  - ci/Gemfile.ar3.2
   - ci/Gemfile.ar-edge
 matrix:
   exclude:
-    - rvm: 1.8.7
+    - rvm: 1.9.2
       gemfile: ci/Gemfile.ar-edge

@@ -57,10 +57,8 @@ describe SexyScopes::ActiveRecord::DynamicMethods do
     TempUser.username
   end
   
-  ruby_19 do
-    it "should return a Method object for an existing column" do
-      expect { TempUser.method(:username) }.to_not raise_error
-    end
+  it "should return a Method object for an existing column" do
+    expect { TempUser.method(:username) }.to_not raise_error
   end
   
   it "should raise NoMethodError for a non-existing column" do

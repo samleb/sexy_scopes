@@ -8,7 +8,7 @@ module SexyScopes
 
       # # @!visibility private
       def respond_to_missing?(method_name, include_private = false) # :nodoc:
-        Object.respond_to?(:respond_to_missing?) && super || sexy_scopes_has_attribute?(method_name)
+        super || sexy_scopes_has_attribute?(method_name)
       end
 
       private
