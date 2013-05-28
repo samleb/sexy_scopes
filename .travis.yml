@@ -12,3 +12,6 @@ matrix:
   exclude:
     - rvm: 1.9.2
       gemfile: ci/Gemfile.ar-edge
+branches:
+  only:
+    - master
