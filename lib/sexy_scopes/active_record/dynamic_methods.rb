@@ -1,17 +1,14 @@
 module SexyScopes
   module ActiveRecord
     module DynamicMethods
-      # @!visibility private
-      def respond_to?(method_name, include_private = false) # :nodoc:
-        super || respond_to_missing?(method_name, include_private)
-      end
-
-      # # @!visibility private
-      def respond_to_missing?(method_name, include_private = false) # :nodoc:
-        super || sexy_scopes_has_attribute?(method_name)
-      end
-
       private
+        # # @!visibility private
+        def respond_to_missing?(method_name, include_private = false) # :nodoc:
+          # super currently resolve to Object#respond_to_missing? which return false,
+          # but future version of ActiveRecord::Base might implement respond_to_missing?
+          sexy_scopes_has_attribute?(method_name) || super
+        end
+        
         # Equivalent to calling {#attribute} with the missing method's <tt>name</tt> if the table
         # has a column with that name.
         #
