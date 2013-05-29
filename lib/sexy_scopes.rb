@@ -8,8 +8,6 @@ module SexyScopes
   extend ActiveSupport::Autoload
   
   autoload :Wrappers
-  autoload :ExpressionWrappers
-  autoload :PredicateWrappers
 end
 
 if defined? Rails::Railtie

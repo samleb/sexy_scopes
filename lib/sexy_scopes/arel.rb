@@ -1,10 +1,12 @@
 module SexyScopes
   module Arel
     extend ActiveSupport::Autoload
-
-    autoload :MathMethods
+    
+    autoload :ExpressionMethods
     autoload :PredicateMethods
-    autoload :BooleanMethods
+    
+    autoload :Predications
+    autoload :Math
   end
 end
 

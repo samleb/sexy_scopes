@@ -3,11 +3,11 @@ module SexyScopes
   module Wrappers # :nodoc:
     private
       def extend_expression(expression)
-        expression.extend(ExpressionWrappers)
+        expression.extend(Arel::ExpressionMethods)
       end
       
       def extend_predicate(predicate)
-        predicate.extend(PredicateWrappers)
+        predicate.extend(Arel::PredicateMethods)
       end
   end
 end

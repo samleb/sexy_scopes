@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SexyScopes::Arel::BooleanMethods do
+describe SexyScopes::Arel::PredicateMethods do
   before do
     @attribute = User.attribute(:score)
     @predicate = @attribute < 1000

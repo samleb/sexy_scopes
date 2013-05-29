@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SexyScopes::ActiveRecord::ClassMethods do
   it "should extend ActiveRecord::Base" do
-    ActiveRecord::Base.should be_extended_by SexyScopes::ActiveRecord::ClassMethods
+    ActiveRecord::Base.should be_extended_by described_class
   end
   
   describe ".attribute(name)" do
@@ -12,7 +12,7 @@ describe SexyScopes::ActiveRecord::ClassMethods do
       subject.should == User.arel_table[:username]
     end
     
-    it { should be_extended_by SexyScopes::ExpressionWrappers }
+    it { should be_extended_by SexyScopes::Arel::ExpressionMethods }
   end
   
   describe ".sql_literal(expression)" do
@@ -23,13 +23,12 @@ describe SexyScopes::ActiveRecord::ClassMethods do
     end
     
     it "should be aliased as `sql`" do
-      SexyScopes::ActiveRecord::ClassMethods.instance_method(:sql).should ==
-        SexyScopes::ActiveRecord::ClassMethods.instance_method(:sql_literal)
+      described_class.instance_method(:sql).should == described_class.instance_method(:sql_literal)
     end
     
-    it { should be_extended_by SexyScopes::ExpressionWrappers }
+    it { should be_extended_by SexyScopes::Arel::ExpressionMethods }
     
-    it { should be_extended_by SexyScopes::PredicateWrappers }
+    it { should be_extended_by SexyScopes::Arel::PredicateMethods }
   end
 end
 

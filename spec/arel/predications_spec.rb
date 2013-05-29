@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SexyScopes::Arel::PredicateMethods do
+describe SexyScopes::Arel::Predications do
   before do
     @attribute = User.attribute(:score)
   end

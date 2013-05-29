@@ -1,50 +1,22 @@
 module SexyScopes
   module Arel
     module PredicateMethods
-      def eq(other)
-        extend_predicate(super)
-      end
-      alias == eq
+      include Wrappers
       
-      def in(other)
+      def not
         extend_predicate(super)
       end
+      alias ~ not
       
-      def matches(other)
+      def or(other)
         extend_predicate(super)
       end
-      alias =~ matches
+      alias | or
       
-      def does_not_match(other)
+      def and(other)
         extend_predicate(super)
       end
-      alias !~ does_not_match
-      
-      def gteq(other)
-        extend_predicate(super)
-      end
-      alias >= gteq
-      
-      def gt(other)
-        extend_predicate(super)
-      end
-      alias > gt
-      
-      def lt(other)
-        extend_predicate(super)
-      end
-      alias < lt
-      
-      def lteq(other)
-        extend_predicate(super)
-      end
-      alias <= lteq
-      
-      def not_eq(other)
-        extend_predicate(super)
-      end
-      alias != not_eq
+      alias & and
     end
   end
 end
-

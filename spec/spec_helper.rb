@@ -24,5 +24,5 @@ shared_examples "a predicate method" do
     subject.class.name.should =~ /^Arel::/
   end
   
-  it { should be_extended_by SexyScopes::PredicateWrappers }
+  it { should be_extended_by SexyScopes::Arel::PredicateMethods }
 end
