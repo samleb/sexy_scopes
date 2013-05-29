@@ -168,11 +168,11 @@ Add this line to your application's Gemfile:
 
 And then execute:
 
-    $ bundle
+    bundle
 
 Or install it yourself as:
 
-    $ gem install sexy_scopes
+    gem install sexy_scopes
 
 Then require it in your application code:
 
