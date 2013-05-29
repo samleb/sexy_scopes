@@ -3,20 +3,20 @@ SexyScopes
 
 **Write beautiful and expressive ActiveRecord scopes without SQL**
 
+SexyScopes is a gem that adds syntactic sugar for creating ActiveRecord scopes
+in Ruby instead of SQL.
+This allows for more expressive, less error-prone and database independent conditions.
+
+**WARNING**: This gem requires Ruby >= 1.9.2 and ActiveRecord >= 3.1.
+
 * [Source Code](https://github.com/samleb/sexy_scopes)
 * [Rubygem](http://rubygems.org/gems/sexy_scopes)
-* [Travis CI](https://travis-ci.org/samleb/sexy_scopes)
-
-SexyScopes is a gem that adds syntactic sugar for creating scopes in ActiveRecord.
-
-**WARNING**: This gem requires Ruby >= 1.9.2 and ActiveRecord >= 3.1
+* [API Documentation](http://rubydoc.info/gems/sexy_scopes)
 
 Usage & Examples
 ----------------
 
-SexyScopes introduces an `attribute` method on ActiveRecord model classes, which returns
-objects that represent a given column, and can be used with operators to constructs
-meaningful `where` predicates:
+Let's define a `Product` model with this schema:
 
 ```ruby
 # price     :integer
@@ -24,46 +24,85 @@ meaningful `where` predicates:
 # visible   :boolean
 # draft     :boolean
 class Product < ActiveRecord::Base
-  scope :visible, (attribute(:category) != nil) & (attribute(:draft) == false)
-  
-  def self.cheaper_tran(price)
-    where attribute(:price) < price
-  end
 end
 ```
 
-For convenience, SexyScopes dynamically resolves methods whose name represent a column,
-i.e. `Product.price` is equivalent to `Product.attribute(:price)`.
-This allows for really expressive statements:
+Now take a look at the following scope:
 
 ```ruby
-# Select all categories having products with a price < 10
-Category.joins(:products).where(Product.price < 10)
+scope :visible, where("category IS NOT NULL AND draft = ? AND price > 0", false)
 ```
 
-The above example can therefore be simplified:
+Hum, lots of *SQL*, not very *Ruby*-esque...
+
+**With SexyScopes**
 
 ```ruby
-class Product < ActiveRecord::Base
-  scope :visible, (category != nil) & (draft == false)
-  
-  def self.cheaper_tran(price)
-    where self.price < price
-  end
-  
-  # Please note that, as `name` is already an ActiveRecord method we can't use `self.name` here.
-  def self.search(term)
-    where attribute(:name) =~ "%#{term}%"
-  end
+scope :visible, where((category != nil) & (draft == false) & (price > 0))
+```
+
+Much better! Looks like magic? *It's not*.
+
+`category`, `draft` and `price` in this context are methods representing your model's columns.
+They respond to Ruby operators (like `<`, `==`, etc.) and can be combined
+with logical operators (`&` and `|`) to express complex predicates.
+
+--------------------------
+
+Let's take a look at another example with these relations:
+
+```ruby
+# rating:  integer
+class Post < ActiveRecord::Base
+  has_many :comments
+end
+
+# post_id_:  integer
+# rating:   integer
+class Comment < ActiveRecord::Base
+  belongs_to :post
 end
 ```
+
+Now let's find posts having comments with a rating > 3.
+
+**Without SexyScopes**
+
+```ruby
+Post.joins(:comments).merge Comment.where("rating > ?", 3)
+# ActiveRecord::StatementInvalid: ambiguous column name: rating
+```
+
+Because both `Post` and `Comment` have a `rating` column, you have to give the table name explicitly:
+
+```ruby
+Post.joins(:comments).merge Comment.where("comments.rating > ?", 3)
+```
+
+Not very DRY, isn't it ?
+
+**With SexyScopes**
+
+```ruby
+Post.joins(:comments).where Comment.rating > 3
+```
+
+Here you have it, clear as day.
 
 How does it work ?
 ------------------
 
-SexyScopes is actually a wrapper around [Arel](https://github.com/rails/arel#readme).
-The `attribute` method works by returning extended `Arel::Attribute` objects that can
-be chained using Ruby operators.
+SexyScopes is essentially a wrapper around [Arel](https://github.com/rails/arel#readme) attribute nodes.
+
+It introduces a `ActiveRecord::Base.attribute(name)` class method returning an `Arel::Attribute` object, which
+represent a table column with the given name, that is extended to support Ruby operators.
+
+For convenience, SexyScopes dynamically resolves methods whose name is an existing table column: i.e.
+`Product.price` is actually a shortcut for `Product.attribute(:price)`.
+
+Please note that this mechanism won't override any of the existing `ActiveRecord::Base` class methods,
+so if you have a column named `name` for instance, you'll have to use `Product.attribute(:name)` instead of
+`Product.name` (which is the class actual name, i.e. `"Product"`).
 
 Here is a complete list of operators, and their `Arel::Attribute` equivalents:
 
@@ -86,27 +125,29 @@ Advanced Examples
 -----------------
 
 ```ruby
-class User < ActiveRecord::Base
-  (score + 20 == 40).to_sql
-  # => ("users"."score" + 20) = 40
+# radius:  integer
+class Circle < ActiveRecord::Base
+  # Attributes can be coerced in arithmetic operations
+  def self.perimeter
+    2 * Math::PI * radius
+  end
   
-  # Columns can even be coerced when used in additions:
-  (20 + score == 40).to_sql
-  # => (20 + "users"."score") = 40
-  
-  ((username == "Bob") | (username != "Alice")).to_sql
-  # => ("users"."username" = 'Bob' OR "users"."username" != 'Alice')
+  def self.area
+    Math::PI * radius * radius
+  end
 end
+
+Circle.where Circle.perimeter > 42
+Circle.where Circle.area < 42
 
 class Product < ActiveRecord::Base
   predicate = (attribute(:name) == nil) & ~category.in(%w( shoes shirts ))
   predicate.to_sql
-  # => "products"."name" IS NULL AND NOT ("products"."category" IN ('shoes', 'shirts'))
+  # => `products`.`name` IS NULL AND NOT (`products`.`category` IN ('shoes', 'shirts'))
   
-  # These predicates can be used as arguments to `where`
   where(predicate).all
-  # => SELECT "products".* FROM "products" WHERE "products"."name" IS NULL AND 
-  #    NOT ("products"."category" IN ('shoes', 'shirts'))
+  # => SELECT `products`.* FROM `products` WHERE `products`.`name` IS NULL AND 
+  #    NOT (`products`.`category` IN ('shoes', 'shirts'))
 end
 ```
 
@@ -129,7 +170,6 @@ Then require it in your application code:
 
     require 'sexy_scopes'
 
-
 Contributing
 ------------
 
@@ -141,8 +181,21 @@ Report bugs or suggest features using [GitHub issues](https://github.com/samleb/
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+TODO
+----
+
+- Document the `sql_literal` method and how it can be used to create complex subqueries
+- Handle associations (i.e. `Post.comments == Comment.joins(:posts)` ?)
+
+Code Status
+-----------
+
+[![Build Status](https://api.travis-ci.org/samleb/sexy_scopes.png)](https://travis-ci.org/samleb/sexy_scopes)
+[![Dependencies](https://gemnasium.com/samleb/sexy_scopes.png?travis)](https://gemnasium.com/samleb/sexy_scopes)
 
 Copyright
 ---------
 
-Copyright (c) 2010-2013 Samuel Lebeau. See LICENSE for details.
+SexyScopes is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+
+Copyright (c) 2010-2013 Samuel Lebeau, See LICENSE for details.
