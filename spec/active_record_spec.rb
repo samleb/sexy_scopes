@@ -9,7 +9,7 @@ describe SexyScopes::ActiveRecord::ClassMethods do
     subject { User.attribute(:username) }
     
     it "should return an Arel attribute for the given name" do
-      subject.should eql User.arel_table[:username]
+      subject.should == User.arel_table[:username]
     end
     
     it { should be_extended_by SexyScopes::ExpressionWrappers }
@@ -19,7 +19,7 @@ describe SexyScopes::ActiveRecord::ClassMethods do
     subject { User.sql_literal('NOW()') }
     
     it "should return an Arel literal for given expression" do
-      subject.should eql(::Arel.sql('NOW()'))
+      subject.should == ::Arel.sql('NOW()')
     end
     
     it "should be aliased as `sql`" do

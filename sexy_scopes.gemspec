@@ -25,8 +25,13 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake', '>= 0.9'
   gem.add_development_dependency 'rails', '~> 3.0'
   gem.add_development_dependency 'rspec', '~> 2.0'
-  gem.add_development_dependency 'sqlite3', '~> 1.0'
-  gem.add_development_dependency 'redcarpet', '~> 2.2'
+  if RUBY_ENGINE == 'jruby'
+    gem.add_development_dependency 'jdbc-sqlite3', '~> 3.0'
+    gem.add_development_dependency 'activerecord-jdbcsqlite3-adapter'
+  else
+    gem.add_development_dependency 'sqlite3', '~> 1.0'
+    gem.add_development_dependency 'redcarpet', '~> 2.2'
+  end
   gem.add_development_dependency 'yard', '~> 0.8'
   gem.add_development_dependency 'simplecov'
 end
