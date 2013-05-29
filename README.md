@@ -57,7 +57,7 @@ class Post < ActiveRecord::Base
   has_many :comments
 end
 
-# post_id_:  integer
+# post_id:  integer
 # rating:   integer
 class Comment < ActiveRecord::Base
   belongs_to :post
@@ -138,16 +138,18 @@ class Circle < ActiveRecord::Base
 end
 
 Circle.where Circle.perimeter > 42
+# SQL: SELECT `circles`.* FROM `circles`  WHERE (6.283185307179586 * `circles`.`radius` > 42)
 Circle.where Circle.area < 42
+# SQL: SELECT `circles`.* FROM `circles`  WHERE (3.141592653589793 * `circles`.`radius` * `circles`.`radius` < 42)
 
 class Product < ActiveRecord::Base
   predicate = (attribute(:name) == nil) & ~category.in(%w( shoes shirts ))
-  predicate.to_sql
-  # => `products`.`name` IS NULL AND NOT (`products`.`category` IN ('shoes', 'shirts'))
+  puts predicate.to_sql
+  # `products`.`name` IS NULL AND NOT (`products`.`category` IN ('shoes', 'shirts'))
   
   where(predicate).all
-  # => SELECT `products`.* FROM `products` WHERE `products`.`name` IS NULL AND 
-  #    NOT (`products`.`category` IN ('shoes', 'shirts'))
+  # SQL: SELECT `products`.* FROM `products` WHERE `products`.`name` IS NULL AND 
+  #      NOT (`products`.`category` IN ('shoes', 'shirts'))
 end
 ```
 
