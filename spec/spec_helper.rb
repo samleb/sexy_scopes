@@ -1,8 +1,8 @@
 if ENV['TRAVIS']
   require 'coveralls'
   Coveralls.wear! do
-    # exclude gems bundled by Travis
-    add_filter 'ci/bundle'
+    # exclude Gemfiles and gems bundled by Travis
+    add_filter 'ci/'
   end
 end
 
