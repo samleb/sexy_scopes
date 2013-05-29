@@ -1,5 +1,10 @@
-require 'coveralls'
-Coveralls.wear!
+if ENV['TRAVIS']
+  require 'coveralls'
+  Coveralls.wear! do
+    # exclude gems bundled by Travis
+    add_filter 'ci/bundle'
+  end
+end
 
 if ENV['COVERAGE']
   require 'simplecov'
