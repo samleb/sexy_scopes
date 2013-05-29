@@ -4,6 +4,8 @@ rvm:
   - 1.9.2
   - 1.9.3
   - 2.0.0
+  - jruby-19mode
+  - rbx-19mode
 gemfile:
   - ci/Gemfile.ar3.1
   - ci/Gemfile.ar3.2
