@@ -1,6 +1,12 @@
 SexyScopes
 ==========
 
+[![Gem Version](https://badge.fury.io/rb/sexy_scopes.png)](https://rubygems.org/gems/sexy_scopes)
+[![Dependencies](https://gemnasium.com/samleb/sexy_scopes.png?travis)](https://gemnasium.com/samleb/sexy_scopes)
+[![Code Climate](https://codeclimate.com/github/samleb/sexy_scopes.png)](https://codeclimate.com/github/samleb/sexy_scopes)
+[![Build Status](https://api.travis-ci.org/samleb/sexy_scopes.png)](https://travis-ci.org/samleb/sexy_scopes)
+[![Coverage Status](https://coveralls.io/repos/samleb/sexy_scopes/badge.png)](https://coveralls.io/r/samleb/sexy_scopes)
+
 **Write beautiful and expressive ActiveRecord scopes without SQL**
 
 SexyScopes is a gem that adds syntactic sugar for creating ActiveRecord scopes
@@ -188,12 +194,6 @@ TODO
 
 - Document the `sql_literal` method and how it can be used to create complex subqueries
 - Handle associations (i.e. `Post.comments == Comment.joins(:posts)` ?)
-
-Code Status
------------
-
-[![Build Status](https://api.travis-ci.org/samleb/sexy_scopes.png)](https://travis-ci.org/samleb/sexy_scopes)
-[![Dependencies](https://gemnasium.com/samleb/sexy_scopes.png?travis)](https://gemnasium.com/samleb/sexy_scopes)
 
 Copyright
 ---------
