@@ -1,13 +1,5 @@
 require 'spec_helper'
 
-shared_examples "an expression method" do
-  it "should return an Arel node" do
-    subject.class.name.should =~ /^Arel::/
-  end
-  
-  it { should be_extended_by SexyScopes::Arel::ExpressionMethods }
-end
-
 describe SexyScopes::Arel::Math do
   before do
     @attribute = User.attribute(:score)
