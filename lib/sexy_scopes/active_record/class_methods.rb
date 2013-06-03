@@ -14,8 +14,7 @@ module SexyScopes
       # @note Please note that no exception is raised if no such column actually exists.
       #
       # @example
-      #   User.where(User.attribute(:score) > 1000)
-      #   # => SELECT "users".* FROM "users" WHERE ("users"."score" > 1000)
+      #   where attribute(:score) > 1000
       #
       def attribute(name)
         attribute = arel_table[name]
@@ -28,12 +27,7 @@ module SexyScopes
       # @param [String, #to_s] expression Any SQL expression.
       #
       # @example
-      #   def Circle.with_perimeter_smaller_than(perimeter)
-      #     where sql(2 * Math::PI) * radius < perimeter
-      #   end
-      #   
-      #   Circle.with_perimeter_smaller_than(20)
-      #   # => SELECT "circles".* FROM "circles" WHERE (6.283185307179586 * "circles"."radius" < 20)
+      #   where sql('LENGTH(email)') > 200
       #
       def sql_literal(expression)
         ::Arel.sql(expression.to_s).tap do |literal|
