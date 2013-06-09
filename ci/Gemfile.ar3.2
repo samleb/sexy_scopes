@@ -1,12 +1,4 @@
-source 'https://rubygems.org'
-
-gem 'activerecord', '~> 3.2.0'
-
-gem 'rake', '~> 0.9'
-gem 'rspec', '~> 2.0'
-gem 'sqlite3', '~> 1.0', platforms: :ruby
-platforms :jruby do
-  gem 'jdbc-sqlite3', '~> 3.0'
-  gem 'activerecord-jdbcsqlite3-adapter', '~> 1.0'
-end
+source 'https://rubygems.org/'
+gemspec path: '../'
 gem 'coveralls', require: false
+gem 'activerecord', '~> 3.2.0'
