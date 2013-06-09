@@ -1,10 +1,7 @@
+require 'sexy_scopes/version'
 require 'active_support/dependencies/autoload'
 
 module SexyScopes
-  %w( Version VERSION ).each do |constant|
-    autoload constant, 'sexy_scopes/version'
-  end
-  
   extend ActiveSupport::Autoload
   
   autoload :Wrappers
