@@ -1,3 +1,4 @@
+require 'active_record'
 require 'sexy_scopes/active_record/class_methods'
 require 'sexy_scopes/active_record/dynamic_methods'
 
