@@ -9,9 +9,12 @@ rvm:
 gemfile:
   - ci/Gemfile.ar3.1
   - ci/Gemfile.ar3.2
+  - ci/Gemfile.ar4.0
   - ci/Gemfile.ar-edge
 matrix:
   exclude:
+    - rvm: 1.9.2
+      gemfile: ci/Gemfile.ar4.0
     - rvm: 1.9.2
       gemfile: ci/Gemfile.ar-edge
 branches:
