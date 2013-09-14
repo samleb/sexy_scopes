@@ -1,8 +1,6 @@
 module SexyScopes
   module Arel
     module Predications
-      include Wrappers
-      
       def eq(other)
         extend_predicate(super)
       end

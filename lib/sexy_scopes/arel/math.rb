@@ -1,8 +1,6 @@
 module SexyScopes
   module Arel
     module Math
-      include Wrappers
-      
       def *(other)
         extend_expression(super)
       end
