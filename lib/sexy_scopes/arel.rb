@@ -19,18 +19,5 @@ module Arel
     class Grouping
       include Arel::Predications
     end
-    
-    # As <tt>SqlLiteral</tt> could be any arbitrary SQL expression, include <tt>Arel::Math</tt>
-    # to allow common mathematic operations.
-    #
-    # @see SexyScopes::ActiveRecord#sql_literal
-    class SqlLiteral
-      include Arel::Math
-    end
-  end
-  
-  # @!visibility private
-  class SqlLiteral # :nodoc:
-    include Arel::Math
   end
 end
