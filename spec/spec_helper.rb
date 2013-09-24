@@ -8,7 +8,7 @@ if ENV['COVERAGE'] || ENV['TRAVIS']
   
   SimpleCov.start do
     # exclude Gemfiles and gems bundled by Travis
-    add_filter 'ci/'
+    add_filter 'gemfiles/'
     add_filter 'spec/'
   end
 end
