@@ -1,5 +1,6 @@
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
+require 'appraisal'
 
 desc "Run specifications"
 RSpec::Core::RakeTask.new(:spec)
