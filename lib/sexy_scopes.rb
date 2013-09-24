@@ -5,7 +5,13 @@ require 'active_support/lazy_load_hooks'
 module SexyScopes
   extend ActiveSupport::Autoload
   
-  autoload :Wrappers
+  def self.extend_expression(expression)
+    expression.extend(Arel::ExpressionMethods)
+  end
+  
+  def self.extend_predicate(predicate)
+    predicate.extend(Arel::PredicateMethods)
+  end
 end
 
 if defined? Rails::Railtie

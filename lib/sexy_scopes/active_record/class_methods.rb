@@ -1,11 +1,8 @@
 require 'sexy_scopes/arel'
-require 'sexy_scopes/wrappers'
 
 module SexyScopes
   module ActiveRecord
     module ClassMethods
-      include Wrappers
-
       # Creates and extends an Arel <tt>Attribute</tt> representing the table's column with
       # the given <tt>name</tt>.
       #
@@ -18,7 +15,7 @@ module SexyScopes
       #
       def attribute(name)
         attribute = arel_table[name]
-        extend_expression(attribute)
+        SexyScopes.extend_expression(attribute)
       end
 
       # Creates and extends an Arel <tt>SqlLiteral</tt> instance for the given <tt>expression</tt>,
@@ -31,8 +28,8 @@ module SexyScopes
       #
       def sql_literal(expression)
         ::Arel.sql(expression.to_s).tap do |literal|
-          extend_expression(literal)
-          extend_predicate(literal)
+          SexyScopes.extend_expression(literal)
+          SexyScopes.extend_predicate(literal)
         end
       end
       alias_method :sql, :sql_literal
