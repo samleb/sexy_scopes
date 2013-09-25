@@ -38,6 +38,8 @@ describe SexyScopes::Arel::PredicateMethods do
     
     it { should convert_to_sql %{("users"."score" < 1000 OR "users"."score" >= 200)} }
     
+    it { should be_extended_by Arel::Predications }
+    
     it "should be aliased as `|`" do
       @predicate.method(:|).should == @predicate.method(:or)
     end
