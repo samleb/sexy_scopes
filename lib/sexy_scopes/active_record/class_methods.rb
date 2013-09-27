@@ -1,5 +1,3 @@
-require 'sexy_scopes/arel'
-
 module SexyScopes
   module ActiveRecord
     module ClassMethods

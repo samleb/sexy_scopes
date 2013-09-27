@@ -1,8 +1,9 @@
-require 'sexy_scopes/version'
-require 'active_support/dependencies/autoload'
 require 'active_support/lazy_load_hooks'
+require 'sexy_scopes/version'
 
 module SexyScopes
+  autoload :Arel, 'sexy_scopes/arel'
+  
   def self.extend_expression(expression)
     expression.extend(Arel::ExpressionMethods)
   end
