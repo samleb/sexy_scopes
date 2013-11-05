@@ -2,11 +2,14 @@ module SexyScopes
   module ActiveRecord
     module DynamicMethods
       private
-        # # @!visibility private
-        def respond_to_missing?(method_name, include_private = false) # :nodoc:
+        def respond_to_missing?(method_name, *)
           # super currently resolve to Object#respond_to_missing? which return false,
           # but future version of ActiveRecord::Base might implement respond_to_missing?
-          sexy_scopes_has_attribute?(method_name) || super
+          if @sexy_scopes_attribute_methods_generated
+            super
+          else
+            sexy_scopes_has_attribute?(method_name)
+          end
         end
         
         # Equivalent to calling {#attribute} with the missing method's <tt>name</tt> if the table
@@ -37,29 +40,29 @@ module SexyScopes
         #   # In these cases you'll have to use `attribute` explicitely
         #   User.attribute(:name)
         #
-        def method_missing(name, *args)
-          if sexy_scopes_has_attribute?(name)
-            sexy_scopes_define_attribute_method(name)
-            attribute(name)
-          else
+        def method_missing(name, *args, &block)
+          if @sexy_scopes_attribute_methods_generated
             super
-          end
-        end
-
-        def sexy_scopes_define_attribute_method(name)
-          class_eval <<-EVAL, __FILE__, __LINE__ + 1
-            def self.#{name}        # def self.username
-              attribute(:#{name})   #   attribute(:username)
-            end                     # end
-          EVAL
-        end
-
-        def sexy_scopes_has_attribute?(attribute_name)
-          if equal?(::ActiveRecord::Base) || abstract_class? || !table_exists?
-            false
           else
-            column_names.include?(attribute_name.to_s)
+            sexy_scopes_define_attribute_methods
+            send(name, *args, &block)
           end
+        end
+        
+        def sexy_scopes_define_attribute_methods
+          @sexy_scopes_attribute_methods_generated = true
+          return unless sexy_scopes_is_table?
+          column_names.each do |name|
+            define_singleton_method(name) { attribute(name) }
+          end
+        end
+        
+        def sexy_scopes_has_attribute?(attribute_name)
+          sexy_scopes_is_table? && column_names.include?(attribute_name.to_s)
+        end
+        
+        def sexy_scopes_is_table?
+          !(equal?(::ActiveRecord::Base) || abstract_class?) && table_exists?
         end
     end
   end

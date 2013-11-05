@@ -14,7 +14,7 @@ describe SexyScopes::ActiveRecord::DynamicMethods do
   
   it "should delegate to `attribute` when the method name is the name of an existing column" do
     TempUser.should respond_to(:username)
-    TempUser.should_receive(:attribute).with(:username).once.and_return(:ok)
+    TempUser.should_receive(:attribute).with('username').once.and_return(:ok)
     TempUser.username.should == :ok
   end
   
