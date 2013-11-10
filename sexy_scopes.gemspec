@@ -29,10 +29,11 @@ Gem::Specification.new do |gem|
   if RUBY_ENGINE == 'jruby'
     gem.add_development_dependency 'jdbc-sqlite3', '~> 3.0'
     gem.add_development_dependency 'activerecord-jdbcsqlite3-adapter'
+    gem.add_development_dependency 'kramdown', '~> 1.2'
   else
     gem.add_development_dependency 'sqlite3', '~> 1.0'
+    gem.add_development_dependency 'redcarpet', '~> 3.0'
   end
   gem.add_development_dependency 'yard', '~> 0.8'
-  gem.add_development_dependency 'maruku', '~> 0.6'
   gem.add_development_dependency 'simplecov'
 end
