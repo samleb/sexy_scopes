@@ -11,14 +11,31 @@ module SexyScopes
       end
       
       def matches(other)
-        SexyScopes.extend_predicate(super)
+        if Regexp === other
+          matches_regexp(other)
+        else
+          SexyScopes.extend_predicate(super)
+        end
       end
       alias =~ matches
       
       def does_not_match(other)
-        SexyScopes.extend_predicate(super)
+        if Regexp === other
+          does_not_match_regexp(other)
+        else
+          SexyScopes.extend_predicate(super)
+        end
       end
       alias !~ does_not_match
+      
+      def matches_regexp(other)
+        predicate = Arel::Nodes::RegexpMatches.new(self, other)
+        SexyScopes.extend_predicate(predicate)
+      end
+      
+      def does_not_match_regexp(other)
+        matches_regexp(other).not
+      end
       
       def gteq(other)
         SexyScopes.extend_predicate(super)
