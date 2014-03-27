@@ -21,7 +21,6 @@ Gem::Specification.new do |gem|
   
   gem.add_dependency 'activerecord', '>= 3.1'
   
-  gem.add_development_dependency 'coveralls'
   gem.add_development_dependency 'appraisal', '~> 0.5.0'
   gem.add_development_dependency 'bundler', '~> 1.0'
   gem.add_development_dependency 'rake', '>= 0.9'
