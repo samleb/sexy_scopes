@@ -36,6 +36,8 @@ describe SexyScopes::ActiveRecord::DynamicMethods do
   end
   
   it "should not override existing methods" do
+    # Ensure attribute methods are generated
+    TempUser.username.should be_an Arel::Attribute
     TempUser.foo.should == :bar
     TempUser.name.should == "TempUser"
   end
