@@ -178,6 +178,55 @@ Then require it in your application code:
 
     require 'sexy_scopes'
 
+Regular Expressions
+-------------------
+
+Did you know that most RDBMS come with pretty good support for regular expressions?
+
+One reason they're quite unpopular in Rails applications is that their syntax is really different amongst
+databases implementations.
+Let's say you're using SQLite3 in development, and PostgreSQL in testing/production, well that's quite a good reason
+not to use database-specific code, isn't it?
+
+Once again, SexyScopes comes to the rescue:
+The `=~` and `!~` operators when called with a regular expression will generate the SQL you don't want to know about.
+
+```ruby
+predicate = User.username =~ /^john\b(.*\b)?doe$/i
+
+# In development, using SQLite3:
+predicate.to_sql
+# => "users"."username" REGEXP '^john\b(.*\b)?doe$'
+
+# In testing/production, using PostgreSQL
+predicate.to_sql
+# => "users"."username" ~* '^john\b(.*\b)?doe$'
+```
+
+Now let's suppose that you want to give your admin a powerful regexp based search upon usernames, here's how
+you could do it:
+
+```ruby
+class Admin::UsersController
+  def index
+    @users = User.where(User.username =~ Regexp.compile(params[:query]))
+    respond_with @users
+  end
+end
+```
+
+Let's see what happens in our production logs (SQL included) when they try this new feature:
+
+```
+Started GET "/admin/users?query=bob%7Calice" for xx.xx.xx.xx at 2014-03-31 16:00:50 +0200
+  Processing by Admin::UsersController#index as HTML
+  Parameters: {"query"=>"bob|alice"}
+  User Load (0.1ms)  SELECT "users".* FROM "users"  WHERE ("users"."username" ~ 'bob|alice')
+```
+
+The proper SQL is generated, protected from SQL injection BTW, and from now on you have reusable code for 
+both you development and your production environment.
+
 Contributing
 ------------
 

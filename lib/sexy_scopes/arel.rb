@@ -1,3 +1,5 @@
+require 'arel/visitors_extensions'
+
 module SexyScopes
   module Arel
     autoload :ExpressionMethods, 'sexy_scopes/arel/expression_methods'
@@ -5,5 +7,9 @@ module SexyScopes
     
     autoload :Predications, 'sexy_scopes/arel/predications'
     autoload :Math, 'sexy_scopes/arel/math'
+    
+    module Nodes
+      autoload :RegexpMatches, 'sexy_scopes/arel/nodes/regexp_matches'
+    end
   end
 end
