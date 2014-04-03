@@ -1,5 +1,6 @@
 language: ruby
-bundler_args: --standalone
+bundler_args: --standalone --binstubs
+script: ./bin/rspec spec/**/*_spec.rb
 rvm:
   - 1.9.2
   - 1.9.3
