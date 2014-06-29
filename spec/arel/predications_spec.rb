@@ -47,9 +47,6 @@ describe SexyScopes::Arel::Predications do
       it_behaves_like "a predicate method"
       
       it { should be_a SexyScopes::Arel::Nodes::RegexpMatches }
-      
-      # FIXME: this belongs to a nodes/regexp_matches_spec.rb with RDBMS-specific specs
-      it { should convert_to_sql %{"users"."username" REGEXP 'foo'} }
     end
     
     describe "the method `does_not_match_regexp`" do
@@ -62,9 +59,6 @@ describe SexyScopes::Arel::Predications do
       it "should be the negation of an SexyScopes::Arel::Nodes::RegexpMatches" do
         subject.expr.should be_a SexyScopes::Arel::Nodes::RegexpMatches
       end
-      
-      # FIXME: this belongs to a nodes/regexp_matches_spec.rb with RDBMS-specific specs
-      it { should convert_to_sql %{NOT ("users"."username" REGEXP 'foo')} }
     end
     
     describe "the operator `=~` called with a Regexp" do
