@@ -3,3 +3,5 @@ gemfiles/*.lock
 coverage
 pkg
 doc
+spec/config.yml
+debug.log

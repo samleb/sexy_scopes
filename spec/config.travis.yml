@@ -1,0 +1,19 @@
+sqlite3:
+  adapter: <%= jruby? ? 'jdbcsqlite3' : 'sqlite3' %>
+  database: ":memory:"
+
+mysql:
+  adapter: <%= jruby? ? 'jdbcmysql' : 'mysql2' %>
+  database: sexy_scopes_spec
+  username: travis
+  encoding: utf8
+
+postgresql:
+  adapter: <%= jruby? ? 'jdbcpostgresql' : 'postgresql' %>
+  database: sexy_scopes_spec
+  username: postgres
+  min_messages: warning
+
+# TODO: Add oracle configuration
+# oracle:
+#   adapter: oracle_enhanced

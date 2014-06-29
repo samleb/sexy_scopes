@@ -20,3 +20,7 @@ require 'sexy_scopes'
 Dir.glob(File.join(File.dirname(__FILE__), '{support,fixtures,matchers}', '*')) do |file|
   require file
 end
+
+RSpec.configure do |config|
+  config.extend DatabaseSystemHelper
+end
