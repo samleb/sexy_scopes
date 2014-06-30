@@ -1,11 +1,11 @@
 SexyScopes
 ==========
 
-[![Gem Version](https://badge.fury.io/rb/sexy_scopes.png)](https://rubygems.org/gems/sexy_scopes)
-[![Dependencies](https://gemnasium.com/samleb/sexy_scopes.png?travis)](https://gemnasium.com/samleb/sexy_scopes)
-[![Code Climate](https://codeclimate.com/github/samleb/sexy_scopes.png)](https://codeclimate.com/github/samleb/sexy_scopes)
-[![Build Status](https://api.travis-ci.org/samleb/sexy_scopes.png)](https://travis-ci.org/samleb/sexy_scopes)
-[![Coverage Status](https://coveralls.io/repos/samleb/sexy_scopes/badge.png)](https://coveralls.io/r/samleb/sexy_scopes)
+[![Gem Version](http://img.shields.io/gem/v/sexy_scopes.svg?style=flat)](https://rubygems.org/gems/sexy_scopes)
+[![Dependencies](https://img.shields.io/gemnasium/samleb/sexy_scopes.svg?style=flat)](https://gemnasium.com/samleb/sexy_scopes)
+[![Code Climate](https://img.shields.io/codeclimate/github/samleb/sexy_scopes.svg?style=flat)](https://codeclimate.com/github/samleb/sexy_scopes)
+[![Build Status](https://img.shields.io/travis/samleb/sexy_scopes.svg?style=flat)](https://travis-ci.org/samleb/sexy_scopes)
+[![Coverage Status](https://img.shields.io/coveralls/samleb/sexy_scopes.svg?style=flat)](https://coveralls.io/r/samleb/sexy_scopes)
 
 **Write beautiful and expressive ActiveRecord scopes without SQL**
 
