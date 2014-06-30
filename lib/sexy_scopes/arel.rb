@@ -6,6 +6,7 @@ module SexyScopes
     autoload :PredicateMethods, 'sexy_scopes/arel/predicate_methods'
     
     autoload :Predications, 'sexy_scopes/arel/predications'
+    autoload :Typecasting, 'sexy_scopes/arel/typecasting'
     autoload :Math, 'sexy_scopes/arel/math'
     
     module Nodes

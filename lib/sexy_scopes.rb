@@ -4,12 +4,32 @@ require 'sexy_scopes/version'
 module SexyScopes
   autoload :Arel, 'sexy_scopes/arel'
   
-  def self.extend_expression(expression)
-    expression.extend(Arel::ExpressionMethods)
-  end
-  
-  def self.extend_predicate(predicate)
-    predicate.extend(Arel::PredicateMethods)
+  class << self
+    AREL_6 = ::Arel::VERSION >= '6.0.0'
+    
+    def extend_expression(expression)
+      expression.extend(Arel::ExpressionMethods)
+    end
+    
+    def extend_predicate(predicate)
+      predicate.extend(Arel::PredicateMethods)
+    end
+    
+    def arel_6?
+      AREL_6
+    end
+    
+    if AREL_6
+      def quote(node, attribute = nil)
+        ::Arel::Nodes.build_quoted(node, attribute)
+      end
+    else
+      def quote(node, attribute = nil)
+        node
+      end
+    end
+    
+    alias_method :type_cast, :quote
   end
 end
 
