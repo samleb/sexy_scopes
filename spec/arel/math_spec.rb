@@ -6,42 +6,42 @@ describe SexyScopes::Arel::Math do
   end
   
   describe "the method `*`" do
-    subject { @attribute * 42.0 }
+    subject { @attribute * 42 }
     
     it_behaves_like "an expression method"
     
-    it { should convert_to_sql %{"users"."score" * 42.0} }
+    it { should convert_to_sql %{"users"."score" * 42} }
   end
   
   describe "the method `+`" do
-    subject { @attribute + 42.0 }
+    subject { @attribute + 42 }
     
     it_behaves_like "an expression method"
     
-    it { should convert_to_sql %{("users"."score" + 42.0)} }
+    it { should convert_to_sql %{("users"."score" + 42)} }
   end
   
   describe "the method `-`" do
-    subject { @attribute - 42.0 }
+    subject { @attribute - 42 }
     
     it_behaves_like "an expression method"
     
-    it { should convert_to_sql %{("users"."score" - 42.0)} }
+    it { should convert_to_sql %{("users"."score" - 42)} }
   end
   
   describe "the method `/`" do
-    subject { @attribute / 42.0 }
+    subject { @attribute / 42 }
     
     it_behaves_like "an expression method"
     
-    it { should convert_to_sql %{"users"."score" / 42.0} }
+    it { should convert_to_sql %{"users"."score" / 42} }
   end
   
-  describe "type coercion" do
-    subject { 42.0 / @attribute }
+  describe "Ruby type coercion" do
+    subject { 42 / @attribute }
     
     it_behaves_like "an expression method"
     
-    it { should convert_to_sql %{42.0 / "users"."score"} }
+    it { should convert_to_sql %{42 / "users"."score"} }
   end
 end

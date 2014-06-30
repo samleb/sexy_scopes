@@ -22,11 +22,11 @@ describe SexyScopes::Arel::Predications do
     sql_operator ||= "#{operator} %s"
     
     describe "the method `#{method}`" do
-      subject { @attribute.send(method, 42.0) }
+      subject { @attribute.send(method, 42) }
       
       it_behaves_like "a predicate method"
       
-      it { should convert_to_sql %{"users"."score" #{sql_operator % 42.0}} }
+      it { should convert_to_sql %{"users"."score" #{sql_operator % 42}} }
       
       if operator
         it "is aliased as `#{operator}`" do
