@@ -2,7 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "coveralls", :require=>false
-gem "activerecord", :github=>"rails/rails", :branch=>"master"
+gem "coveralls", :require => false
+gem "activerecord", :github => "rails/rails", :branch => "master"
+gem "arel", :github => "rails/arel", :branch => "master"
 
-gemspec :path=>"../"
+gemspec :path => "../"
