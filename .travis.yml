@@ -1,6 +1,5 @@
 language: ruby
 rvm:
-  - 1.9.2
   - 1.9.3
   - 2.0.0
   - 2.1.0
@@ -16,12 +15,6 @@ env:
   - DB=postgresql
   - DB=mysql
   - DB=sqlite3
-matrix:
-  exclude:
-    - rvm: 1.9.2
-      gemfile: gemfiles/activerecord_4.gemfile
-    - rvm: 1.9.2
-      gemfile: gemfiles/activerecord_edge.gemfile
 branches:
   only:
     - master
