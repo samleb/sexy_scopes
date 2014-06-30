@@ -1,15 +1,17 @@
 language: ruby
+script: bundle exec rake
 rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.0
   - 2.1.1
-  - jruby-19mode
+  - jruby
   - rbx-2
 gemfile:
   - gemfiles/activerecord_3_1.gemfile
   - gemfiles/activerecord_3_2.gemfile
-  - gemfiles/activerecord_4.gemfile
+  - gemfiles/activerecord_4_0.gemfile
+  - gemfiles/activerecord_4_1.gemfile
   - gemfiles/activerecord_edge.gemfile
 env:
   - DB=postgresql
