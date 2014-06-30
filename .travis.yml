@@ -5,7 +5,7 @@ rvm:
   - 2.1.0
   - 2.1.1
   - jruby-19mode
-  - rbx
+  - rbx-2
 gemfile:
   - gemfiles/activerecord_3_1.gemfile
   - gemfiles/activerecord_3_2.gemfile
