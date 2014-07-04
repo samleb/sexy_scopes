@@ -17,6 +17,10 @@ env:
   - DB=postgresql
   - DB=mysql
   - DB=sqlite3
+matrix:
+  allow_failures:
+    - rvm: jruby
+      gemfile: gemfiles/activerecord_edge.gemfile
 branches:
   only:
     - master
