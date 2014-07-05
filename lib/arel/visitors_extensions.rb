@@ -3,6 +3,8 @@ require 'arel/visitors'
 module Arel
   module Visitors
     class ToSql
+      private
+      
       def visit_Regexp(regexp, arg = nil)
         source = SexyScopes.quote(regexp.source)
         sexy_scopes_visit source, arg
@@ -30,12 +32,14 @@ module Arel
     end
     
     class MySQL
+      private
+      
       def visit_SexyScopes_Arel_Nodes_RegexpMatches(o, arg = nil)
         regexp = o.right
         right = SexyScopes.quote(regexp.source)
         right = Arel::Nodes::Bin.new(right) unless regexp.casefold?
         if reduce_visitor?
-          sexy_scopes_visit o.left, arg
+          visit o.left, arg
           arg << ' REGEXP '
           visit right, arg
         else
@@ -45,12 +49,14 @@ module Arel
     end
     
     class PostgreSQL
+      private
+      
       def visit_SexyScopes_Arel_Nodes_RegexpMatches(o, arg = nil)
         regexp = o.right
         operator = regexp.casefold? ? '~*' : '~'
         right = SexyScopes.quote(regexp.source)
         if reduce_visitor?
-          sexy_scopes_visit o.left, arg
+          visit o.left, arg
           arg << SPACE << operator << SPACE
           visit right, arg
         else
@@ -60,13 +66,15 @@ module Arel
     end
     
     class Oracle
+      private
+      
       def visit_SexyScopes_Arel_Nodes_RegexpMatches(o, arg = nil)
         regexp = o.right
         flags = regexp.casefold? ? 'i' : 'c'
         flags << 'm' if regexp.options & Regexp::MULTILINE == Regexp::MULTILINE
         if reduce_visitor?
           arg << 'REGEXP_LIKE('
-          sexy_scopes_visit o.left, arg
+          visit o.left, arg
           arg << COMMA
           visit regexp.source, arg
           arg << COMMA
