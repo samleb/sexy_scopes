@@ -38,8 +38,8 @@ describe SexyScopes::ActiveRecord::DynamicMethods do
   it "should not override existing methods" do
     # Ensure attribute methods are generated
     TempUser.username.should be_an Arel::Attribute
-    TempUser.foo.should == :bar
-    TempUser.name.should == "TempUser"
+    TempUser.foo.should eql(:bar)
+    TempUser.name.should eql("TempUser")
   end
   
   it "should respond to methods whose names are column names" do

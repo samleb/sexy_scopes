@@ -53,7 +53,9 @@ module SexyScopes
           @sexy_scopes_attribute_methods_generated = true
           return unless sexy_scopes_is_table?
           column_names.each do |name|
-            define_singleton_method(name) { attribute(name) }
+            unless respond_to?(name, true)
+              define_singleton_method(name) { attribute(name) }
+            end
           end
         end
         
