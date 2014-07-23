@@ -1,10 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.7.0 - 2014-07-23
+
 ### Added
 - Support for Regular Expressions with the `=~` and `!~` operators (PostgreSQL, MySQL & SQLite3)
 - Support for ActiveRecord 4.1
 - Support for Arel 6
+- Integration with Travis CI (https://travis-ci.org/samleb/sexy_scopes)
+
+### Fixed
+- Existing class methods no longer overriden by dynamic method generation
 
 ### Removed
 - Support for Ruby 1.9.2
