@@ -5,8 +5,6 @@ module SexyScopes
   autoload :Arel, 'sexy_scopes/arel'
   
   class << self
-    AREL_6 = ::Arel::VERSION >= '6.0.0'
-    
     def extend_expression(expression)
       expression.extend(Arel::ExpressionMethods)
     end
@@ -16,15 +14,13 @@ module SexyScopes
     end
     
     def arel_6?
-      AREL_6
+      @arel_6 ||= ::Arel::VERSION >= '6.0.0'
     end
     
-    if AREL_6
-      def quote(node, attribute = nil)
+    def quote(node, attribute = nil)
+      if arel_6?
         ::Arel::Nodes.build_quoted(node, attribute)
-      end
-    else
-      def quote(node, attribute = nil)
+      else
         node
       end
     end
