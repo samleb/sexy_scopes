@@ -1,30 +1,38 @@
 language: ruby
-script: bundle exec rake
+
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1.0
-  - 2.1.1
+  - 2.1
   - jruby
   - rbx-2
+
 gemfile:
   - gemfiles/activerecord_3_1.gemfile
   - gemfiles/activerecord_3_2.gemfile
   - gemfiles/activerecord_4_0.gemfile
   - gemfiles/activerecord_4_1.gemfile
   - gemfiles/activerecord_edge.gemfile
+
 env:
   - DB=postgresql
   - DB=mysql
   - DB=sqlite3
-matrix:
-  allow_failures:
-    - rvm: jruby
-      gemfile: gemfiles/activerecord_edge.gemfile
-branches:
-  only:
-    - master
+
+sudo: false
+
 before_script:
   - sh -c "if [ '$DB' = 'postgresql' ]; then psql -c 'DROP DATABASE IF EXISTS sexy_scopes_spec;' -U postgres; fi"
   - sh -c "if [ '$DB' = 'postgresql' ]; then psql -c 'CREATE DATABASE sexy_scopes_spec;' -U postgres; fi"
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS sexy_scopes_spec;'; fi"
+
+script: bundle exec rake
+
+matrix:
+  allow_failures:
+    - rvm: jruby
+      gemfile: gemfiles/activerecord_edge.gemfile
+
+branches:
+  only:
+    - master
