@@ -27,7 +27,6 @@ Let's define a `Product` model with this schema:
 ```ruby
 # price     :integer
 # category  :string
-# visible   :boolean
 # draft     :boolean
 class Product < ActiveRecord::Base
 end
@@ -36,7 +35,7 @@ end
 Now take a look at the following scope:
 
 ```ruby
-scope :visible, where("category IS NOT NULL AND draft = ? AND price > 0", false)
+scope :visible, -> { where('category IS NOT NULL AND draft = ? AND price > 0', false) }
 ```
 
 Hum, lots of *SQL*, not very *Ruby*-esque...
@@ -44,7 +43,7 @@ Hum, lots of *SQL*, not very *Ruby*-esque...
 **With SexyScopes**
 
 ```ruby
-scope :visible, where((category != nil) & (draft == false) & (price > 0))
+scope :visible, -> { where((category != nil) & (draft == false) & (price > 0)) }
 ```
 
 Much better! Looks like magic? *It's not*.
@@ -70,94 +69,30 @@ class Comment < ActiveRecord::Base
 end
 ```
 
-Now let's find posts having comments with a rating > 3.
+Now let's find posts having comments with a rating greater than a given rating in a controller action:
 
 **Without SexyScopes**
 
 ```ruby
-Post.joins(:comments).merge Comment.where("rating > ?", 3)
+@posts = Post.joins(:comments).where('rating > ?', params[:rating])
 # ActiveRecord::StatementInvalid: ambiguous column name: rating
 ```
 
 Because both `Post` and `Comment` have a `rating` column, you have to give the table name explicitly:
 
 ```ruby
-Post.joins(:comments).merge Comment.where("comments.rating > ?", 3)
+@posts = Post.joins(:comments).where('comments.rating > ?', params[:rating])
 ```
 
-Not very DRY, isn't it ?
+Not very DRY, is it?
 
 **With SexyScopes**
 
 ```ruby
-Post.joins(:comments).where Comment.rating > 3
+@posts = Post.joins(:comments).where Comment.rating > params[:rating]
 ```
 
-Here you have it, clear as day.
-
-How does it work ?
-------------------
-
-SexyScopes is essentially a wrapper around [Arel](https://github.com/rails/arel#readme) attribute nodes.
-
-It introduces a `ActiveRecord::Base.attribute(name)` class method returning an `Arel::Attribute` object, which
-represent a table column with the given name, that is extended to support Ruby operators.
-
-For convenience, SexyScopes dynamically resolves methods whose name is an existing table column: i.e.
-`Product.price` is actually a shortcut for `Product.attribute(:price)`.
-
-Please note that this mechanism won't override any of the existing `ActiveRecord::Base` class methods,
-so if you have a column named `name` for instance, you'll have to use `Product.attribute(:name)` instead of
-`Product.name` (which is the class actual name, i.e. `"Product"`).
-
-Here is a complete list of operators, and their `Arel::Attribute` equivalents:
-
-* For predicates:
-  - `==`: `eq`
-  - `=~`: `matches`
-  - `!~`: `does_not_match`
-  - `>=`: `gteq`
-  - `>` : `gt`
-  - `<` : `lt`
-  - `<=`: `lteq`
-  - `!=`: `not_eq`
-
-* For combination
-  - `&`: `and`
-  - `|`: `or`
-  - `~`: `not` (unfortunately, unary prefix `!` doesn't work with ActiveRecord)
-
-Advanced Examples
------------------
-
-```ruby
-# radius:  integer
-class Circle < ActiveRecord::Base
-  # Attributes can be coerced in arithmetic operations
-  def self.perimeter
-    2 * Math::PI * radius
-  end
-  
-  def self.area
-    Math::PI * radius * radius
-  end
-end
-
-Circle.where Circle.perimeter > 42
-# SQL: SELECT `circles`.* FROM `circles`  WHERE (6.283185307179586 * `circles`.`radius` > 42)
-Circle.where Circle.area < 42
-# SQL: SELECT `circles`.* FROM `circles`  WHERE (3.141592653589793 * `circles`.`radius` * `circles`.`radius` < 42)
-
-class Product < ActiveRecord::Base
-  predicate = (attribute(:name) == nil) & ~category.in(%w( shoes shirts ))
-  puts predicate.to_sql
-  # `products`.`name` IS NULL AND NOT (`products`.`category` IN ('shoes', 'shirts'))
-  
-  where(predicate).all
-  # SQL: SELECT `products`.* FROM `products` WHERE `products`.`name` IS NULL AND 
-  #      NOT (`products`.`category` IN ('shoes', 'shirts'))
-end
-```
+Here you have it, clear as day, still protected from SQL injection.
 
 Installation
 ------------
@@ -177,6 +112,38 @@ Or install it yourself as:
 Then require it in your application code:
 
     require 'sexy_scopes'
+
+How does it work ?
+------------------
+
+SexyScopes is essentially a wrapper around [Arel](https://github.com/rails/arel#readme) attribute nodes.
+
+It introduces a `ActiveRecord::Base.attribute(name)` class method returning an `Arel::Attribute` object, which
+represent a table column with the given name, that is extended to support Ruby operators.
+
+For convenience, SexyScopes dynamically resolves methods whose name is an existing table column: i.e.
+`Product.price` is a shortcut for `Product.attribute(:price)`.
+
+Please note that this mechanism won't override any of the existing `ActiveRecord::Base` class methods,
+so if you have a column named `name` for instance, you'll have to use `Product.attribute(:name)` instead of
+`Product.name` (which would be in this case the class actual name, `"Product"`).
+
+Here is a complete list of operators, and their `Arel::Attribute` equivalents:
+
+* Predicates:
+  - `==`: `eq`
+  - `=~`: `matches`
+  - `!~`: `does_not_match`
+  - `>=`: `gteq`
+  - `>` : `gt`
+  - `<` : `lt`
+  - `<=`: `lteq`
+  - `!=`: `not_eq`
+
+* Logical operators:
+  - `&`: `and`
+  - `|`: `or`
+  - `~`: `not`
 
 Regular Expressions
 -------------------
@@ -224,8 +191,40 @@ Started GET "/admin/users?query=bob%7Calice" for xx.xx.xx.xx at 2014-03-31 16:00
   User Load (0.1ms)  SELECT "users".* FROM "users"  WHERE ("users"."username" ~ 'bob|alice')
 ```
 
-The proper SQL is generated, protected from SQL injection BTW, and from now on you have reusable code for 
+The proper SQL is generated, protected from SQL injection BTW, and from now on you have reusable code for
 both you development and your production environment.
+
+Advanced Examples
+-----------------
+
+```ruby
+# radius:  integer
+class Circle < ActiveRecord::Base
+  # Attributes can be coerced in arithmetic operations
+  def self.perimeter
+    2 * Math::PI * radius
+  end
+
+  def self.area
+    Math::PI * radius * radius
+  end
+end
+
+Circle.where Circle.perimeter > 42
+# SQL: SELECT `circles`.* FROM `circles`  WHERE (6.283185307179586 * `circles`.`radius` > 42)
+Circle.where Circle.area < 42
+# SQL: SELECT `circles`.* FROM `circles`  WHERE (3.141592653589793 * `circles`.`radius` * `circles`.`radius` < 42)
+
+class Product < ActiveRecord::Base
+  predicate = (attribute(:name) == nil) & ~category.in(%w( shoes shirts ))
+  puts predicate.to_sql
+  # `products`.`name` IS NULL AND NOT (`products`.`category` IN ('shoes', 'shirts'))
+
+  where(predicate).all
+  # SQL: SELECT `products`.* FROM `products` WHERE `products`.`name` IS NULL AND
+  #      NOT (`products`.`category` IN ('shoes', 'shirts'))
+end
+```
 
 Contributing
 ------------
@@ -249,4 +248,4 @@ Copyright
 
 SexyScopes is released under the [MIT License](http://www.opensource.org/licenses/MIT).
 
-Copyright (c) 2010-2013 Samuel Lebeau, See LICENSE for details.
+Copyright (c) 2010-2014 Samuel Lebeau, See LICENSE for details.

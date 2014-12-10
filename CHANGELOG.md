@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Support for Regular Expressions with the `=~` and `!~` operators (PostgreSQL, MySQL & SQLite3)
 - Support for ActiveRecord 4.1
 - Support for Arel 6
+- Typecasting of predicates values to target columns' types
 - Integration with Travis CI (https://travis-ci.org/samleb/sexy_scopes)
 
 ### Fixed
