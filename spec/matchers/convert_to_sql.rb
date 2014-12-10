@@ -1,11 +1,10 @@
 RSpec::Matchers.define :convert_to_sql do |expected|
-  expected =
-    case SexyScopesSpec.database_system
-    when 'mysql'
-      expected.gsub('"', '`')
-    when 'postgresql'
-      expected.gsub('LIKE', 'ILIKE')
-    end
+  case SexyScopesSpec.database_system
+  when 'mysql'
+    expected = expected.gsub('"', '`')
+  when 'postgresql'
+    expected = expected.gsub('LIKE', 'ILIKE')
+  end
 
   match do |actual|
     convert_to_sql(actual) == expected
