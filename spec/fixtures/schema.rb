@@ -6,4 +6,9 @@ ActiveRecord::Schema.define do
     t.string  :username
     t.integer :score
   end
+
+  create_table :messages, force: true do |t|
+    t.references :author
+    t.string :body
+  end
 end
