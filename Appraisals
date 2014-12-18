@@ -14,6 +14,10 @@ appraise 'activerecord_4_1' do
   gem 'activerecord', '~> 4.1.0'
 end
 
+appraise 'activerecord_4_2' do
+  gem 'activerecord', '~> 4.2.0.rc3'
+end
+
 appraise 'activerecord_edge' do
   gem 'activerecord', github: 'rails/rails', branch: 'master'
   gem 'arel', github: 'rails/arel', branch: 'master'
