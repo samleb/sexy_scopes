@@ -15,7 +15,7 @@ appraise 'activerecord_4_1' do
 end
 
 appraise 'activerecord_4_2' do
-  gem 'activerecord', '~> 4.2.0.rc3'
+  gem 'activerecord', '~> 4.2.0'
 end
 
 appraise 'activerecord_edge' do
