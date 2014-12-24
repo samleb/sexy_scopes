@@ -10,7 +10,7 @@ describe SexyScopes::Arel::Math do
 
     it_behaves_like "an expression method"
 
-    it { should convert_to_sql %{"users"."score" * 42} }
+    it { is_expected.to convert_to_sql %{"users"."score" * 42} }
   end
 
   describe "the method `+`" do
@@ -18,7 +18,7 @@ describe SexyScopes::Arel::Math do
 
     it_behaves_like "an expression method"
 
-    it { should convert_to_sql %{("users"."score" + 42)} }
+    it { is_expected.to convert_to_sql %{("users"."score" + 42)} }
   end
 
   describe "the method `-`" do
@@ -26,7 +26,7 @@ describe SexyScopes::Arel::Math do
 
     it_behaves_like "an expression method"
 
-    it { should convert_to_sql %{("users"."score" - 42)} }
+    it { is_expected.to convert_to_sql %{("users"."score" - 42)} }
   end
 
   describe "the method `/`" do
@@ -34,7 +34,7 @@ describe SexyScopes::Arel::Math do
 
     it_behaves_like "an expression method"
 
-    it { should convert_to_sql %{"users"."score" / 42} }
+    it { is_expected.to convert_to_sql %{"users"."score" / 42} }
   end
 
   describe "Ruby type coercion" do
@@ -42,7 +42,7 @@ describe SexyScopes::Arel::Math do
 
     it_behaves_like "an expression method"
 
-    it { should convert_to_sql %{42 / "users"."score"} }
+    it { is_expected.to convert_to_sql %{42 / "users"."score"} }
   end
 
   if ::Arel::VERSION >= '6.0.0'
@@ -54,7 +54,7 @@ describe SexyScopes::Arel::Math do
           it_behaves_like "an expression method"
 
           it "should cast #{value.inspect} to column type (integer)" do
-            subject.should convert_to_sql %{"users"."score" * 42}
+            expect(subject).to convert_to_sql %{"users"."score" * 42}
           end
         end
       end

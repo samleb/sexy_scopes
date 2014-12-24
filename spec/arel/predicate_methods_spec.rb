@@ -12,10 +12,10 @@ describe SexyScopes::Arel::PredicateMethods do
 
     it_behaves_like "a predicate method"
 
-    it { should convert_to_sql %{NOT ("users"."score" < 1000)} }
+    it { is_expected.to convert_to_sql %{NOT ("users"."score" < 1000)} }
 
     it "should be aliased as `~`" do
-      @predicate.method(:~).should == @predicate.method(:not)
+      expect(@predicate.method(:~)).to eq @predicate.method(:not)
     end
   end
 
@@ -24,10 +24,10 @@ describe SexyScopes::Arel::PredicateMethods do
 
     it_behaves_like "a predicate method"
 
-    it { should convert_to_sql %{"users"."score" < 1000 AND "users"."score" >= 200} }
+    it { is_expected.to convert_to_sql %{"users"."score" < 1000 AND "users"."score" >= 200} }
 
     it "should be aliased as `&`" do
-      @predicate.method(:&).should == @predicate.method(:and)
+      expect(@predicate.method(:&)).to eq @predicate.method(:and)
     end
   end
 
@@ -36,12 +36,12 @@ describe SexyScopes::Arel::PredicateMethods do
 
     it_behaves_like "a predicate method"
 
-    it { should convert_to_sql %{("users"."score" < 1000 OR "users"."score" >= 200)} }
+    it { is_expected.to convert_to_sql %{("users"."score" < 1000 OR "users"."score" >= 200)} }
 
-    it { should be_extended_by Arel::Predications }
+    it { is_expected.to be_extended_by Arel::Predications }
 
     it "should be aliased as `|`" do
-      @predicate.method(:|).should == @predicate.method(:or)
+      expect(@predicate.method(:|)).to eq @predicate.method(:or)
     end
   end
 end

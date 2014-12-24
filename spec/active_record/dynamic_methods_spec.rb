@@ -24,26 +24,26 @@ describe SexyScopes::ActiveRecord::DynamicMethods do
   end
 
   it "should delegate to `attribute` when the method name is the name of an existing column" do
-    TempUser.should_receive(:attribute).with('username').once.and_return(:ok)
-    TempUser.username.should == :ok
+    expect(TempUser).to receive(:attribute).with('username').once.and_return(:ok)
+    expect(TempUser.username).to eq :ok
   end
 
   it "should define attribute methods all at once, avoiding repeated `method_missing` calls" do
     TempUser.username
-    TempUser.should_not_receive(:method_missing)
+    expect(TempUser).not_to receive(:method_missing)
     TempUser.username
     TempUser.score
   end
 
   it "should not override existing methods" do
     # Ensure attribute methods are generated
-    TempUser.username.should be_an Arel::Attribute
-    TempUser.foo.should eql(:bar)
-    TempUser.name.should eql("TempUser")
+    expect(TempUser.username).to be_an Arel::Attribute
+    expect(TempUser.foo).to eql :bar
+    expect(TempUser.name).to eql "TempUser"
   end
 
   it "should respond to methods whose names are column names" do
-    TempUser.should respond_to(:username)
+    expect(TempUser).to respond_to :username
   end
 
   it "should return a Method object for methods whose names are column names" do
@@ -51,7 +51,7 @@ describe SexyScopes::ActiveRecord::DynamicMethods do
   end
 
   it "should raise `NoMethodError` for methods whose names aren't column names" do
-    TempUser.should_not respond_to(:foobar)
+    expect(TempUser).not_to respond_to(:foobar)
     expect { TempUser.foobar }.to raise_error NoMethodError
   end
 
@@ -62,7 +62,7 @@ describe SexyScopes::ActiveRecord::DynamicMethods do
 
   shared_examples "a non-table class" do
     it "should not raise error when calling `respond_to?`" do
-      expect { subject.respond_to?(:username) }.not_to raise_error
+      expect { subject.respond_to?(:username) }.to_not raise_error
     end
 
     it "should raise `NoMethodError` error when going through `method_missing`" do

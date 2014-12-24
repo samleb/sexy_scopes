@@ -26,11 +26,11 @@ describe SexyScopes::Arel::Predications do
 
       it_behaves_like "a predicate method"
 
-      it { should convert_to_sql %{"users"."score" #{sql_operator % 42}} }
+      it { is_expected.to convert_to_sql %{"users"."score" #{sql_operator % 42}} }
 
       if operator
         it "is aliased as `#{operator}`" do
-          described_class.instance_method(operator).should == described_class.instance_method(method)
+          expect(described_class.instance_method(operator)).to eq described_class.instance_method(method)
         end
       end
     end
@@ -47,7 +47,7 @@ describe SexyScopes::Arel::Predications do
 
         it_behaves_like "a predicate method"
 
-        it { should convert_to_sql %{"users"."username" LIKE 'bob' ESCAPE '|'} }
+        it { is_expected.to convert_to_sql %{"users"."username" LIKE 'bob' ESCAPE '|'} }
       end
 
       describe "the method `does_not_match`, called with the `escape` argument" do
@@ -55,7 +55,7 @@ describe SexyScopes::Arel::Predications do
 
         it_behaves_like "a predicate method"
 
-        it { should convert_to_sql %{"users"."username" NOT LIKE 'bob' ESCAPE '|'} }
+        it { is_expected.to convert_to_sql %{"users"."username" NOT LIKE 'bob' ESCAPE '|'} }
       end
     end
   end
@@ -70,7 +70,7 @@ describe SexyScopes::Arel::Predications do
 
       it_behaves_like "a predicate method"
 
-      it { should be_a SexyScopes::Arel::Nodes::RegexpMatches }
+      it { is_expected.to be_a SexyScopes::Arel::Nodes::RegexpMatches }
     end
 
     describe "the method `does_not_match_regexp`" do
@@ -78,24 +78,24 @@ describe SexyScopes::Arel::Predications do
 
       it_behaves_like "a predicate method"
 
-      it { should be_a Arel::Nodes::Not }
+      it { is_expected.to be_a Arel::Nodes::Not }
 
       it "should be the negation of an SexyScopes::Arel::Nodes::RegexpMatches" do
-        subject.expr.should be_a SexyScopes::Arel::Nodes::RegexpMatches
+        expect(subject.expr).to be_a SexyScopes::Arel::Nodes::RegexpMatches
       end
     end
 
     describe "the operator `=~` called with a Regexp" do
       it "should delegate to the method `matches_regexp`" do
-        @attribute.should_receive(:matches_regexp).once.with(/foo/).and_return(:ok)
-        (@attribute =~ /foo/).should eq :ok
+        expect(@attribute).to receive(:matches_regexp).once.with(/foo/).and_return(:ok)
+        expect(@attribute =~ /foo/).to eq :ok
       end
     end
 
     describe "the operator `!~` called with a Regexp" do
       it "should delegate to the method `matches_regexp`" do
-        @attribute.should_receive(:does_not_match_regexp).once.with(/foo/).and_return(:ok)
-        (@attribute !~ /foo/).should eq :ok
+        expect(@attribute).to receive(:does_not_match_regexp).once.with(/foo/).and_return(:ok)
+        expect(@attribute !~ /foo/).to eq :ok
       end
     end
   end
