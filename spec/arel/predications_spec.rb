@@ -36,6 +36,30 @@ describe SexyScopes::Arel::Predications do
     end
   end
   
+  if SexyScopes.arel_6?
+    context "LIKE function with ESCAPE clause" do
+      before do
+        @attribute = User.attribute(:username)
+      end
+      
+      describe "the method `matches`, called with the `escape` argument" do
+        subject { @attribute.matches('bob', '|') }
+        
+        it_behaves_like "a predicate method"
+        
+        it { should convert_to_sql %{"users"."username" LIKE 'bob' ESCAPE '|'} }
+      end
+      
+      describe "the method `does_not_match`, called with the `escape` argument" do
+        subject { @attribute.does_not_match('bob', '|') }
+        
+        it_behaves_like "a predicate method"
+        
+        it { should convert_to_sql %{"users"."username" NOT LIKE 'bob' ESCAPE '|'} }
+      end
+    end
+  end
+
   context "(Regular Expressions)" do
     before do
       @attribute = User.attribute(:username)
