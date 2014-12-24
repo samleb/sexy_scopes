@@ -1,11 +1,11 @@
 if ENV['COVERAGE'] || ENV['TRAVIS']
   require 'simplecov'
-  
+
   if ENV['TRAVIS']
     require 'coveralls'
     SimpleCov.formatter = Coveralls::SimpleCov::Formatter
   end
-  
+
   SimpleCov.start do
     # exclude Gemfiles and gems bundled by Travis
     add_filter 'gemfiles/'

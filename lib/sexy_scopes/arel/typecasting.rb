@@ -4,15 +4,15 @@ module SexyScopes
       def *(other)
         super SexyScopes.type_cast(other, self)
       end
-      
+
       def +(other)
         super SexyScopes.type_cast(other, self)
       end
-      
+
       def -(other)
         super SexyScopes.type_cast(other, self)
       end
-      
+
       def /(other)
         super SexyScopes.type_cast(other, self)
       end

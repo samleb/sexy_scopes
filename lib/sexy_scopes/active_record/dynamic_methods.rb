@@ -11,12 +11,12 @@ module SexyScopes
             sexy_scopes_has_attribute?(method_name)
           end
         end
-        
+
         # Equivalent to calling {#attribute} with the missing method's <tt>name</tt> if the table
         # has a column with that name.
         #
         # Delegates to superclass implementation otherwise, eventually raising <tt>NoMethodError</tt>.
-        # 
+        #
         # @see #attribute
         #
         # @note Due to the way this works, be careful not to use this syntactic sugar with existing
@@ -28,7 +28,7 @@ module SexyScopes
         #   # Suppose the "users" table has an "email" column, then these are equivalent:
         #   User.email
         #   User.attribute(:email)
-        #   
+        #
         # @example
         #   # Here is the previous example (from `attribute`) rewritten:
         #   User.where(User.score > 1000)
@@ -48,7 +48,7 @@ module SexyScopes
             send(name, *args, &block)
           end
         end
-        
+
         def sexy_scopes_define_attribute_methods
           @sexy_scopes_attribute_methods_generated = true
           return unless sexy_scopes_is_table?
@@ -58,11 +58,11 @@ module SexyScopes
             end
           end
         end
-        
+
         def sexy_scopes_has_attribute?(attribute_name)
           sexy_scopes_is_table? && column_names.include?(attribute_name.to_s)
         end
-        
+
         def sexy_scopes_is_table?
           !(equal?(::ActiveRecord::Base) || abstract_class?) && table_exists?
         end

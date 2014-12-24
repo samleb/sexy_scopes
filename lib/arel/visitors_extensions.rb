@@ -4,12 +4,12 @@ module Arel
   module Visitors
     class ToSql
       private
-      
+
       def visit_Regexp(regexp, arg = nil)
         source = SexyScopes.quote(regexp.source)
         sexy_scopes_visit source, arg
       end
-      
+
       # Arel >= 4.0
       if instance_method(:visit).arity > 1
         alias_method :sexy_scopes_visit, :visit
@@ -18,7 +18,7 @@ module Arel
           visit(node)
         end
       end
-      
+
       # Arel >= 6.0
       if instance_method(:accept).arity > 1
         def reduce_visitor?
@@ -30,10 +30,10 @@ module Arel
         end
       end
     end
-    
+
     class MySQL
       private
-      
+
       def visit_SexyScopes_Arel_Nodes_RegexpMatches(o, arg = nil)
         regexp = o.right
         right = SexyScopes.quote(regexp.source)
@@ -47,10 +47,10 @@ module Arel
         end
       end
     end
-    
+
     class PostgreSQL
       private
-      
+
       def visit_SexyScopes_Arel_Nodes_RegexpMatches(o, arg = nil)
         regexp = o.right
         operator = regexp.casefold? ? '~*' : '~'
@@ -64,10 +64,10 @@ module Arel
         end
       end
     end
-    
+
     class Oracle
       private
-      
+
       def visit_SexyScopes_Arel_Nodes_RegexpMatches(o, arg = nil)
         regexp = o.right
         flags = regexp.casefold? ? 'i' : 'c'

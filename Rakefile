@@ -13,7 +13,7 @@ end
 
 namespace :spec do
   databases = %w( postgresql mysql sqlite3 )
-  
+
   databases.each do |db|
     desc "Run specifications using #{db} database"
     task db do
