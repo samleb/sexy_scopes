@@ -2,7 +2,7 @@ language: ruby
 
 rvm:
   - 1.9.3
-  - 2.0.0
+  - 2.0
   - 2.1
   - jruby
   - rbx-2
@@ -31,9 +31,14 @@ script: bundle exec rake
 
 matrix:
   allow_failures:
+    - rvm: rbx-2
     # Typecasting seems broken on JRuby except with sqlite3 adapter
     - rvm: jruby
       gemfile: gemfiles/activerecord_4_2.gemfile
+    # Arel edge (unlike 6.0.0) supports LIKE function's ESCAPE clause with PostgreSQL
+    # As `Arel::VERSION` still reports 6.0.0, allow failures for this combination
+    - gemfile: gemfiles/activerecord_edge
+      env: DB=postgresql
   exclude:
     # ActiveRecord edge (future 5.0) requires Ruby > 2.0
     - rvm: 1.9.3
