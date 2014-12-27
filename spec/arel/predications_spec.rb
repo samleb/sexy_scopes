@@ -37,7 +37,7 @@ describe SexyScopes::Arel::Predications do
   end
 
   if SexyScopes.arel_6?
-    context "LIKE function with ESCAPE clause" do
+    context "LIKE function with ESCAPE clause (Arel >= 6)" do
       before do
         @attribute = User.attribute(:username)
       end
@@ -47,7 +47,13 @@ describe SexyScopes::Arel::Predications do
 
         it_behaves_like "a predicate method"
 
-        it { is_expected.to convert_to_sql %{"users"."username" LIKE 'bob' ESCAPE '|'} }
+        except_db :postgresql do
+          it { is_expected.to convert_to_sql %{"users"."username" LIKE 'bob' ESCAPE '|'} }
+        end
+
+        db :postgresql do
+          it { is_expected.to convert_to_sql %{"users"."username" LIKE 'bob'} }
+        end
       end
 
       describe "the method `does_not_match`, called with the `escape` argument" do
@@ -55,7 +61,13 @@ describe SexyScopes::Arel::Predications do
 
         it_behaves_like "a predicate method"
 
-        it { is_expected.to convert_to_sql %{"users"."username" NOT LIKE 'bob' ESCAPE '|'} }
+        except_db :postgresql do
+          it { is_expected.to convert_to_sql %{"users"."username" NOT LIKE 'bob' ESCAPE '|'} }
+        end
+
+        db :postgresql do
+          it { is_expected.to convert_to_sql %{"users"."username" NOT LIKE 'bob'} }
+        end
       end
     end
   end
