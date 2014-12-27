@@ -37,7 +37,7 @@ matrix:
       gemfile: gemfiles/activerecord_4_2.gemfile
     # Arel edge (unlike 6.0.0) supports LIKE function's ESCAPE clause with PostgreSQL
     # As `Arel::VERSION` still reports 6.0.0, allow failures for this combination
-    - gemfile: gemfiles/activerecord_edge
+    - gemfile: gemfiles/activerecord_edge.gemfile
       env: DB=postgresql
   exclude:
     # ActiveRecord edge (future 5.0) requires Ruby > 2.0
