@@ -35,6 +35,7 @@ matrix:
     - rvm: jruby
       gemfile: gemfiles/activerecord_4_2.gemfile
   exclude:
+    # ActiveRecord edge (future 5.0) requires Ruby > 2.0
     - rvm: 1.9.3
       gemfile: gemfiles/activerecord_edge.gemfile
     - rvm: jruby
