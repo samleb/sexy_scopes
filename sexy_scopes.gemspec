@@ -16,9 +16,9 @@ Gem::Specification.new do |gem|
 
   gem.licenses = ['MIT']
 
-  gem.required_ruby_version = '>= 1.9.2'
+  gem.required_ruby_version = '>= 1.9.3'
 
-  gem.add_dependency 'activerecord', '>= 3.1'
+  gem.add_dependency 'activerecord', '>= 3.1', '< 5'
 
   gem.add_development_dependency 'appraisal', '~> 1.0'
   gem.add_development_dependency 'bundler', '~> 1.0'
