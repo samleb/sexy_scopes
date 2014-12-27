@@ -14,7 +14,7 @@ RSpec::Matchers.define :convert_to_sql do |expected|
     "convert to the following SQL: #{expected}"
   end
 
-  failure_message_for_should do |actual|
+  failure_message do |actual|
     "expected generated SQL to be \n  #{expected}\ngot\n  #{convert_to_sql(actual)}"
   end
 

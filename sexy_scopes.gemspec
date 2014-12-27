@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'appraisal', '~> 1.0'
   gem.add_development_dependency 'bundler', '~> 1.0'
   gem.add_development_dependency 'rake', '>= 0.9'
-  gem.add_development_dependency 'rspec', '~> 2.0'
+  gem.add_development_dependency 'rspec', '~> 3.0'
   if RUBY_ENGINE == 'jruby'
     gem.add_development_dependency 'jdbc-sqlite3', '~> 3.0'
     gem.add_development_dependency 'activerecord-jdbcsqlite3-adapter'
