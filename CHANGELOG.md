@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 0.8.0 - 2015-01-11
+## 0.8.0 - 2015-01-18
 
 ### Added
 - Support for ActiveRecord 4.2 (thanks to Thomas Kriechbaumer)
