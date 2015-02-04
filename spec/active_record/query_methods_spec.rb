@@ -10,7 +10,7 @@ describe SexyScopes::ActiveRecord::QueryMethods do
         # * ActiveRecord 4 implements `where` by using `delegate :where, to: :all`
         # In both cases, the actual receiver is an "empty" instance of ActiveRecord::Relation,
         # hence the use of `unscoped` here to create an equivalent relation.
-        expect_block_to_be_executed_in_context User.unscoped
+        expect_block_to_be_executed_in_context_or_with_argument User.unscoped
       end
 
       it "should use the returned expression as conditions" do
@@ -23,7 +23,7 @@ describe SexyScopes::ActiveRecord::QueryMethods do
       subject { User.select('1') }
 
       it "should execute the block in the context of the relation" do
-        expect_block_to_be_executed_in_context
+        expect_block_to_be_executed_in_context_or_with_argument
       end
 
       it "should use the returned expression as conditions" do
@@ -43,7 +43,7 @@ describe SexyScopes::ActiveRecord::QueryMethods do
 
       it "should execute the block in the context of the association" do
         context = subject.respond_to?(:scoped) ? subject.scoped : subject
-        expect_block_to_be_executed_in_context(context)
+        expect_block_to_be_executed_in_context_or_with_argument(context)
       end
 
       it "should use the returned expression as conditions" do
@@ -62,11 +62,19 @@ describe SexyScopes::ActiveRecord::QueryMethods do
       end
     end
 
-    def expect_block_to_be_executed_in_context(expected_context = subject)
+    def expect_block_to_be_executed_in_context_or_with_argument(expected_context = subject)
       context = nil
       expect {
         subject.where {
           context = self
+          throw :block_called
+        }
+      }.to throw_symbol :block_called
+      expect(context).to eq expected_context
+
+      expect {
+        subject.where { |rel|
+          context = rel
           throw :block_called
         }
       }.to throw_symbol :block_called

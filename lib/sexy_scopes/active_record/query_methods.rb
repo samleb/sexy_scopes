@@ -24,7 +24,11 @@ module SexyScopes
       def where(*args, &block)
         if block
           raise ArgumentError, "You can't use both arguments and a block" if args.any?
-          conditions = instance_exec(&block)
+          if block.arity.zero?
+            conditions = instance_exec(&block)
+          else
+            conditions = yield(self)
+          end
           super(conditions)
         else
           super
