@@ -18,7 +18,8 @@ appraise 'activerecord_4_2' do
   gem 'activerecord', '~> 4.2.0'
 end
 
-appraise 'activerecord_edge' do
-  gem 'activerecord', github: 'rails/rails', branch: 'master'
-  gem 'arel', github: 'rails/arel', branch: 'master'
-end
+# Re-add when ActiveRecord 5 is supported
+# appraise 'activerecord_edge' do
+#   gem 'activerecord', github: 'rails/rails', branch: 'master'
+#   gem 'arel', github: 'rails/arel', branch: 'master'
+# end

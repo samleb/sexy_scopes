@@ -4,8 +4,7 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
-  - jruby
-  - rbx-2
+  - rbx
 
 gemfile:
   - gemfiles/activerecord_3_1.gemfile
@@ -13,7 +12,6 @@ gemfile:
   - gemfiles/activerecord_4_0.gemfile
   - gemfiles/activerecord_4_1.gemfile
   - gemfiles/activerecord_4_2.gemfile
-  - gemfiles/activerecord_edge.gemfile
 
 env:
   - DB=postgresql

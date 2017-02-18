@@ -13,7 +13,7 @@ SexyScopes is a gem that adds syntactic sugar for creating ActiveRecord scopes
 in Ruby instead of SQL.
 This allows for more expressive, less error-prone and database independent conditions.
 
-**WARNING**: This gem requires Ruby >= 2.0 and ActiveRecord >= 3.1.
+**WARNING**: This gem requires Ruby >= 2.0 and ActiveRecord >= 3.1 (5 is not supported *yet*)
 
 * [Source Code](https://github.com/samleb/sexy_scopes)
 * [Rubygem](http://rubygems.org/gems/sexy_scopes)
@@ -282,6 +282,7 @@ TODO
 - Handle associations (i.e. `Post.comments == Comment.joins(:posts)` ?)
 - Add support for block syntax on `where.not` clause
 - Drop support for ActiveRecord < 4
+- Add support for ActiveRecord 5
 
 Copyright
 ---------

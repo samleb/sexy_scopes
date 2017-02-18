@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'activerecord', '>= 3.1', '< 5'
 
-  gem.add_development_dependency 'appraisal', '~> 1.0'
+  gem.add_development_dependency 'appraisal', '~> 2.1'
   gem.add_development_dependency 'bundler', '~> 1.0'
   gem.add_development_dependency 'rake', '>= 0.9'
   gem.add_development_dependency 'rspec', '~> 3.0'
@@ -32,7 +32,7 @@ Gem::Specification.new do |gem|
     gem.add_development_dependency 'kramdown', '~> 1.2'
   else
     gem.add_development_dependency 'sqlite3', '~> 1.0'
-    gem.add_development_dependency 'mysql2', '~> 0.3'
+    gem.add_development_dependency 'mysql2', '>= 0.3.10', '< 0.5'
     gem.add_development_dependency 'pg', '~> 0.8'
     gem.add_development_dependency 'redcarpet', '~> 3.0'
   end
