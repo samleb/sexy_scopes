@@ -4,7 +4,7 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
-  - rbx
+  - rbx-2
 
 gemfile:
   - gemfiles/activerecord_3_1.gemfile
@@ -29,13 +29,7 @@ script: bundle exec rake
 
 matrix:
   allow_failures:
-    - gemfile: gemfiles/activerecord_edge.gemfile
-    # Typecasting seems broken on JRuby except with sqlite3 adapter
-    - rvm: jruby
-      gemfile: gemfiles/activerecord_4_2.gemfile
-  exclude:
-    - rvm: jruby
-      gemfile: gemfiles/activerecord_edge.gemfile
+    - rvm: rbx-2
 
 branches:
   only:
