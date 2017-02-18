@@ -58,12 +58,14 @@ Let's take a look at another example with these relations:
 
 ```ruby
 # rating:  integer
+# body: text
 class Post < ActiveRecord::Base
   has_many :comments
 end
 
 # post_id:  integer
 # rating:   integer
+# body: text
 class Comment < ActiveRecord::Base
   belongs_to :post
 end
@@ -75,7 +77,12 @@ Now let's find posts having comments with a rating greater than a given rating i
 
 ```ruby
 @posts = Post.joins(:comments).where('rating > ?', params[:rating])
-# ActiveRecord::StatementInvalid: ambiguous column name: rating
+```
+
+This expression, while syntactically valid, raises the following exception:
+
+```
+ActiveRecord::StatementInvalid: ambiguous column name: rating
 ```
 
 Because both `Post` and `Comment` have a `rating` column, you have to give the table name explicitly:
@@ -84,9 +91,9 @@ Because both `Post` and `Comment` have a `rating` column, you have to give the t
 @posts = Post.joins(:comments).where('comments.rating > ?', params[:rating])
 ```
 
-Not very DRY, is it?
-
 **With SexyScopes**
+
+Since `Comment.rating` represents the `rating` column of the `Comment` model, the above can be rewritten as such:
 
 ```ruby
 @posts = Post.joins(:comments).where Comment.rating > params[:rating]
@@ -145,6 +152,36 @@ Here is a complete list of operators, and their `Arel::Attribute` equivalents:
   - `|`: `or`
   - `~`: `not`
 
+Block syntax
+------------
+
+SexyScopes introduces a new block syntax for the `where` clause, which can be used in 2 different forms:
+
+* With no argument, the block is evaluated in the context of the relation
+
+```ruby
+# `price` is `Product.price`
+Product.where { price < 500 }
+
+# `body` is `post.comments.body`
+post.comments.where { body =~ "%ruby%" }
+```
+
+* With an argument, block is called with the relation as argument
+
+```ruby
+# `p` is the `Product` relation
+Product.where { |p| p.price < 500 }
+
+# `c` is the `post.comments` relation
+post.comments.where { |c| c.body =~ "%ruby%" }
+```
+
+These 2 forms are functionally equivalent. The former, while being more concise, is internally implemented
+using `instance_eval`, which may prevent you from calling methods that are normally available from within the block.
+
+Try switching to the later form if encounter `NoMethodError` exceptions.
+
 Regular Expressions
 -------------------
 
@@ -176,7 +213,8 @@ you could do it:
 ```ruby
 class Admin::UsersController
   def index
-    @users = User.where(User.username =~ Regexp.compile(params[:query]))
+    query = Regexp.compile(params[:query])
+    @users = User.where { username =~ query }
     respond_with @users
   end
 end
@@ -210,9 +248,9 @@ class Circle < ActiveRecord::Base
   end
 end
 
-Circle.where Circle.perimeter > 42
+Circle.where { perimeter > 42 }
 # SQL: SELECT `circles`.* FROM `circles`  WHERE (6.283185307179586 * `circles`.`radius` > 42)
-Circle.where Circle.area < 42
+Circle.where { area < 42 }
 # SQL: SELECT `circles`.* FROM `circles`  WHERE (3.141592653589793 * `circles`.`radius` * `circles`.`radius` < 42)
 
 class Product < ActiveRecord::Base
@@ -242,6 +280,8 @@ TODO
 
 - Document the `sql_literal` method and how it can be used to create complex subqueries
 - Handle associations (i.e. `Post.comments == Comment.joins(:posts)` ?)
+- Add support for block syntax on `where.not` clause
+- Drop support for ActiveRecord < 4
 
 Copyright
 ---------
