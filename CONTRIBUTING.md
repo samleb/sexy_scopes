@@ -16,7 +16,7 @@ Contributing
 
 - To run the test suite, do:
 
-      bundle exec rake spec
+      bundle exec rake
 
 - By default, this will only run the tests with the latest version of ActiveRecord and using an in-memory SQLite3 database.
   This is the simplest way to ensure you've not broken anything.

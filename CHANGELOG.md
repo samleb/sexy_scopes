@@ -1,6 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.0.0.beta1 - 2017-09-17
+
+### Added
+- Support for ActiveRecord 5
+- Support for Ruby >= 2.2
+- Support for Rubinius 3
+- Alternative `where` syntax not implemented using `instance_exec` (relation is passed when block takes an argument)
+- Support for block syntax with `where.not`
+
+### Removed
+- Support for ActiveRecord < 4.2
+- Support for Ruby 1.9.3
+
 ## 0.8.0 - 2015-01-18
 
 ### Added
