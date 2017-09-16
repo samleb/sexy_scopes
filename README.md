@@ -96,7 +96,7 @@ Because both `Post` and `Comment` have a `rating` column, you have to give the t
 Since `Comment.rating` represents the `rating` column of the `Comment` model, the above can be rewritten as such:
 
 ```ruby
-@posts = Post.joins(:comments).where Comment.rating > params[:rating]
+@posts = Post.joins(:comments).where { rating > params[:rating] }
 ```
 
 Here you have it, clear as day, still protected from SQL injection.
@@ -177,10 +177,16 @@ Product.where { |p| p.price < 500 }
 post.comments.where { |c| c.body =~ "%ruby%" }
 ```
 
-These 2 forms are functionally equivalent. The former, while being more concise, is internally implemented
-using `instance_eval`, which may prevent you from calling methods that are normally available from within the block.
+These 2 forms are functionally equivalent.
+The former, while being more concise, is internally implemented using `instance_eval`, which will prevent you from calling method on the receiver (`self`).
 
-Try switching to the later form if encounter `NoMethodError` exceptions.
+*Tip*: Try switching to the later form if you encounter `NoMethodError` exceptions.
+
+Note that you can also use this syntax with `where.not`:
+
+```ruby
+Product.where.not { price > 200 }
+```
 
 Regular Expressions
 -------------------
