@@ -36,43 +36,29 @@ describe SexyScopes::Arel::Predications do
     end
   end
 
-  if SexyScopes.arel_6?
-    context "LIKE function with ESCAPE clause (Arel >= 6)" do
-      before do
-        @attribute = User.attribute(:username)
-      end
+  context "LIKE operator" do
+    before do
+      @attribute = User.attribute(:username)
+    end
 
-      describe "the method `matches`, called with the `escape` argument" do
-        subject { @attribute.matches('bob', '|') }
+    describe "the method `matches`" do
+      subject { @attribute.matches('bob') }
 
-        it_behaves_like "a predicate method"
+      it_behaves_like "a predicate method"
 
-        except_db :postgresql do
-          it { is_expected.to convert_to_sql %{"users"."username" LIKE 'bob' ESCAPE '|'} }
-        end
+      it { is_expected.to convert_to_sql %{"users"."username" LIKE 'bob'} }
+    end
 
-        db :postgresql do
-          it { is_expected.to convert_to_sql %{"users"."username" LIKE 'bob'} }
-        end
-      end
+    describe "the method `does_not_match`" do
+      subject { @attribute.does_not_match('bob') }
 
-      describe "the method `does_not_match`, called with the `escape` argument" do
-        subject { @attribute.does_not_match('bob', '|') }
+      it_behaves_like "a predicate method"
 
-        it_behaves_like "a predicate method"
-
-        except_db :postgresql do
-          it { is_expected.to convert_to_sql %{"users"."username" NOT LIKE 'bob' ESCAPE '|'} }
-        end
-
-        db :postgresql do
-          it { is_expected.to convert_to_sql %{"users"."username" NOT LIKE 'bob'} }
-        end
-      end
+      it { is_expected.to convert_to_sql %{"users"."username" NOT LIKE 'bob'} }
     end
   end
 
-  context "(Regular Expressions)" do
+  context "Regular Expressions" do
     before do
       @attribute = User.attribute(:username)
     end

@@ -16,9 +16,9 @@ Gem::Specification.new do |gem|
 
   gem.licenses = ['MIT']
 
-  gem.required_ruby_version = '>= 1.9.3'
+  gem.required_ruby_version = '>= 2.0.0'
 
-  gem.add_dependency 'activerecord', '>= 3.1', '< 5'
+  gem.add_dependency 'activerecord', '>= 4.0', '< 5.2'
 
   gem.add_development_dependency 'appraisal', '~> 2.1'
   gem.add_development_dependency 'bundler', '~> 1.0'
@@ -32,7 +32,7 @@ Gem::Specification.new do |gem|
     gem.add_development_dependency 'kramdown', '~> 1.2'
   else
     gem.add_development_dependency 'sqlite3', '~> 1.0'
-    gem.add_development_dependency 'mysql2', '~> 0.3.10'
+    gem.add_development_dependency 'mysql2', '~> 0.4.9'
     gem.add_development_dependency 'pg', '~> 0.8'
     gem.add_development_dependency 'redcarpet', '~> 3.0'
   end

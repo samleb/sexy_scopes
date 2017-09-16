@@ -6,11 +6,7 @@ describe SexyScopes::ActiveRecord::QueryMethods do
       subject { User }
 
       it "should execute the block in the context of the class" do
-        # * ActiveRecord 3 implements `where` by using `delegate :where, to: :scoped`
-        # * ActiveRecord 4 implements `where` by using `delegate :where, to: :all`
-        # In both cases, the actual receiver is an "empty" instance of ActiveRecord::Relation,
-        # hence the use of `unscoped` here to create an equivalent relation.
-        expect_block_to_be_executed_in_context_or_with_argument User.unscoped
+        expect_block_to_be_executed_in_context_or_with_argument User.all
       end
 
       it "should use the returned expression as conditions" do
@@ -42,15 +38,20 @@ describe SexyScopes::ActiveRecord::QueryMethods do
       }
 
       it "should execute the block in the context of the association" do
-        context = subject.respond_to?(:scoped) ? subject.scoped : subject
-        expect_block_to_be_executed_in_context_or_with_argument(context)
+        expect_block_to_be_executed_in_context_or_with_argument
       end
 
       it "should use the returned expression as conditions" do
         relation = subject.where { body =~ '%alice%' }
-        expect(relation).to convert_to_sql <<-SQL.strip
-          SELECT "messages".* FROM "messages" WHERE "messages"."author_id" = #{@bob.id} AND ("messages"."body" LIKE '%alice%')
-        SQL
+        if SexyScopes.arel_9?
+          expect(relation).to convert_to_sql <<-SQL.strip
+            SELECT "messages".* FROM "messages" WHERE "messages"."author_id" = #{@bob.id} AND "messages"."body" LIKE '%alice%'
+          SQL
+        else
+          expect(relation).to convert_to_sql <<-SQL.strip
+            SELECT "messages".* FROM "messages" WHERE "messages"."author_id" = #{@bob.id} AND ("messages"."body" LIKE '%alice%')
+          SQL
+        end
       end
     end
 
@@ -72,6 +73,7 @@ describe SexyScopes::ActiveRecord::QueryMethods do
       }.to throw_symbol :block_called
       expect(context).to eq expected_context
 
+      context = nil
       expect {
         subject.where { |rel|
           context = rel

@@ -1,7 +1,7 @@
 module SexyScopes
   module Arel
     module Math
-      include Typecasting if SexyScopes.arel_6?
+      include Typecasting
 
       def *(other)
         SexyScopes.extend_expression(super)

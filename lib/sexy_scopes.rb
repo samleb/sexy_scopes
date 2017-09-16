@@ -13,16 +13,12 @@ module SexyScopes
       predicate.extend(Arel::PredicateMethods)
     end
 
-    def arel_6?
-      @arel_6 ||= ::Arel::VERSION >= '6.0.0'
+    def arel_9?
+      @arel_9 ||= ::Arel::VERSION >= '9.0.0'
     end
 
     def quote(node, attribute = nil)
-      if arel_6?
-        ::Arel::Nodes.build_quoted(node, attribute)
-      else
-        node
-      end
+      ::Arel::Nodes.build_quoted(node, attribute)
     end
 
     alias_method :type_cast, :quote
