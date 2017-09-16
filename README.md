@@ -273,26 +273,13 @@ end
 Contributing
 ------------
 
-Report bugs or suggest features using [GitHub issues](https://github.com/samleb/sexy_scopes).
+All suggestions, ideas and contributions are very welcome.
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
-
-TODO
-----
-
-- Document the `sql_literal` method and how it can be used to create complex subqueries
-- Handle associations (i.e. `Post.comments == Comment.joins(:posts)` ?)
-- Add support for block syntax on `where.not` clause
-- Drop support for ActiveRecord < 4
-- Add support for ActiveRecord 5
+If you want to contribute, please follow the steps described in [CONTRIBUTING.md](CONTRIBUTING.md)
 
 Copyright
 ---------
 
 SexyScopes is released under the [MIT License](http://www.opensource.org/licenses/MIT).
 
-Copyright (c) 2010-2014 Samuel Lebeau, See LICENSE for details.
+Copyright (c) 2010-2017 Samuel Lebeau, See LICENSE for details.
