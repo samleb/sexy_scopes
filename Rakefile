@@ -8,7 +8,7 @@ RSpec::Core::RakeTask.new(:spec)
 desc "Measure test coverage"
 task :cov do
   ENV['COVERAGE'] = '1'
-  Rake::Task['spec'].invoke
+  Rake::Task[:spec].invoke
 end
 
 namespace :spec do
@@ -18,9 +18,13 @@ namespace :spec do
     desc "Run specifications using #{db} database"
     task db do
       ENV['DB'] = db
+      Rake::Task[:spec].reenable
       Rake::Task[:spec].invoke
     end
   end
+
+  desc "Run specifications using all databases"
+  task :all => databases
 end
 
 task :default => :spec
