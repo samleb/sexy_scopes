@@ -1,3 +1,5 @@
+**WARNING: UNMAINTAINED AT THE MOMENT, SORRY :(**
+
 SexyScopes
 ==========
 
