@@ -31,9 +31,9 @@ Gem::Specification.new do |gem|
     gem.add_development_dependency 'activerecord-jdbcpostgresql-adapter', '~> 1.0'
     gem.add_development_dependency 'kramdown', '~> 1.2'
   else
-    gem.add_development_dependency 'sqlite3', '~> 1.0'
     gem.add_development_dependency 'mysql2', '~> 0.4.9'
     gem.add_development_dependency 'pg', '~> 0.8'
+    gem.add_development_dependency 'sqlite3', '~> 1.3.6'
     gem.add_development_dependency 'redcarpet', '~> 3.0'
   end
   gem.add_development_dependency 'yard', '~> 0.8'
