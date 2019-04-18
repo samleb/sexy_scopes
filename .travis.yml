@@ -22,7 +22,7 @@ env:
 sudo: false
 
 before_install:
-  - gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+  - command curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
   - rvm get master
 
 before_script:
@@ -53,8 +53,3 @@ matrix:
       gemfile: gemfiles/activerecord_5_2.gemfile
     - rvm: 2.1
       gemfile: gemfiles/activerecord_edge.gemfile
-
-
-branches:
-  only:
-    - master
