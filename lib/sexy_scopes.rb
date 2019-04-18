@@ -14,7 +14,7 @@ module SexyScopes
     end
 
     def arel_9?
-      @arel_9 ||= ::Arel::VERSION >= '9.0.0'
+      @arel_9 ||= Gem::Version.new(::Arel::VERSION) >= Gem::Version.new('9.0.0')
     end
 
     def quote(node, attribute = nil)

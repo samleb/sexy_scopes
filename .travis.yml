@@ -4,12 +4,14 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
+  - 2.4
   - rbx-3
 
 gemfile:
   - gemfiles/activerecord_4_2.gemfile
   - gemfiles/activerecord_5_0.gemfile
   - gemfiles/activerecord_5_1.gemfile
+  - gemfiles/activerecord_5_2.gemfile
   - gemfiles/activerecord_edge.gemfile
 
 env:
@@ -39,13 +41,18 @@ matrix:
     - rvm: 2.0
       gemfile: gemfiles/activerecord_5_1.gemfile
     - rvm: 2.0
+      gemfile: gemfiles/activerecord_5_2.gemfile
+    - rvm: 2.0
       gemfile: gemfiles/activerecord_edge.gemfile
     - rvm: 2.1
       gemfile: gemfiles/activerecord_5_0.gemfile
     - rvm: 2.1
       gemfile: gemfiles/activerecord_5_1.gemfile
     - rvm: 2.1
+      gemfile: gemfiles/activerecord_5_2.gemfile
+    - rvm: 2.1
       gemfile: gemfiles/activerecord_edge.gemfile
+
 
 branches:
   only:
